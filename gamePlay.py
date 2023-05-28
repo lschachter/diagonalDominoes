@@ -14,7 +14,7 @@ class GamePlay:
         self.startY = 8
         self.quitB = quitB
         self.buttons = player1.getButtonSet()
-        self.tiles1 = player1.getTileSet()
+        self.tiles1 = player1.getTiles()
         self.switch, self.place = player1.getMoveSet()
         self.usedTiles = []
         self.numClicked = 0

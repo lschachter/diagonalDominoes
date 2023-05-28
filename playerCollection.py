@@ -83,7 +83,7 @@ class PlayerCollection:
             self.choiceButtons.append(button)
             y += 80
 
-    def gettiles(self):
+    def getTiles(self):
         """returns the set of tiles"""
         return self.tiles
 
