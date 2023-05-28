@@ -17,7 +17,7 @@ class PlayerCollection:
         self.window = window
         self.top = top
         self.x = self.top.getX()
-        self.player = player
+        self.playerNum = player
         self.tiles = []
         self.choiceButtons = []
         self.squareWidth = 50
@@ -46,7 +46,7 @@ class PlayerCollection:
             self.tiles.append(tile)
             self.left.append(tile)
 
-        info = Text(self.top, "Player " + str(self.player) + " Collection")
+        info = Text(self.top, "Player " + str(self.playerNum) + " Collection")
         info.setSize(25)
         info.draw(self.window)
 
@@ -106,3 +106,6 @@ class PlayerCollection:
     def updateLeft(self, tile: Tile):
         """updates the tiles left in the player's hand"""
         self.left.remove(tile)
+
+    def getPlayerNum(self):
+        return self.playerNum

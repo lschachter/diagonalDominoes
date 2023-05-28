@@ -1,22 +1,26 @@
 from collections import defaultdict
 from gNode import GNode
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
     from tile import Tile
+    from playerCollection import PlayerCollection
 
 
 class GameTree:
     """creates and populates a tree of possibilities for the game,
     as well as does the rollback analysis"""
 
-    def __init__(self, root: GNode, rootTile: "Tile"):
+    def __init__(
+        self, root: GNode, rootTile: "Tile", players: List["PlayerCollection"]
+    ):
         """constructs the tree with the given root tile"""
         self.rootTile = rootTile
         self.root = root
         self.tree = defaultdict(list)
         self.tree[0].append(self.root)
+        self.players = players
 
     def getRoot(self):
         """returns the root"""
@@ -26,14 +30,12 @@ class GameTree:
         """returns actual dictionary"""
         return self.tree
 
-    def populateTree(self, player1, player2):
+    def populateTree(self):
         """gives the player tile collections and relevant info to the recursive
         function 'nextMove' to populate the tree"""
-        self.player1 = player1
-        self.player2 = player2
-        self.nextMove(self.player2, 2, 1, self.root, self.rootTile.getColor2())
+        self.nextMove(self.players[1], 1, self.root, self.rootTile.getColor2())
 
-    def nextMove(self, player, playerNum, depth, node, prevCol):
+    def nextMove(self, player, depth, node, prevCol):
         """a recursive function that finds each possible next move"""
         for tile in player.getLeft():
             if prevCol == tile.getColor2():
@@ -43,10 +45,8 @@ class GameTree:
                 newNode = GNode(tile, depth)
                 node.addOutgoing(newNode)
                 self.tree[node.getDepth()].append(node)
-                newNum = playerNum % 2 + 1
                 self.nextMove(
-                    eval("self.player" + str(newNum)),
-                    newNum,
+                    self.players[player.getPlayerNum() % 2],
                     depth + 1,
                     newNode,
                     tile.getColor2(),

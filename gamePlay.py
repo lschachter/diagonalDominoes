@@ -87,8 +87,8 @@ class GamePlay:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
         self.root = GNode(rootTile, 0)
-        self.tree = GameTree(self.root, rootTile)
-        self.tree.populateTree(self.player1, self.player2)
+        self.tree = GameTree(self.root, rootTile, [self.player1, self.player2])
+        self.tree.populateTree()
         self.tree.setPayoffs()
         # self.tree.printTree() # UNCOMMENT LINE TO SEE TREE PRINT
 
