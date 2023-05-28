@@ -2,11 +2,10 @@ class GNode:
     """a GNode is just an object that holds a tile and all the tiles
     that that tile can reach"""
 
-    def __init__(self, tile, player: int, depth: int):
+    def __init__(self, tile, depth: int):
         """constructs the node"""
         self.tile = tile
         self.outgoing = []
-        self.player = player
         self.depth = depth
         self.payOff = 0
         self.items = ""

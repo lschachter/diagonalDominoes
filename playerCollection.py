@@ -4,9 +4,14 @@ from graphics import Point, Text
 from tile import Tile
 from button import Button
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from graphics import GraphWin
+
 
 class PlayerCollection:
-    def __init__(self, window, top: Point, player: int):
+    def __init__(self, window: "GraphWin", top: Point, player: int):
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
@@ -93,10 +98,6 @@ class PlayerCollection:
     def getMoveSet(self):
         """returns the switch and placement tiles"""
         return self.switchB, self.placeB
-
-    def getPlayer(self):
-        """returns the number associated with the player"""
-        return self.player
 
     def getLeft(self):
         """returns the tiles left in the player's hand"""

@@ -1,8 +1,8 @@
 from random import randrange
 
-from graphics import GraphWin, Text, Point, color_rgb, Rectangle
+from graphics import GraphWin, Text, Point, color_rgb
 from grid import Grid
-from button import Button
+from button import Button, InfoBox
 from playerCollection import PlayerCollection
 from gamePlay import GamePlay
 from tile import Tile
@@ -43,26 +43,25 @@ def main():
     # instructions
     while not gameB.isClicked(pt):
         if instB.isClicked(pt):
-            instRect = Rectangle(Point(245, 100), Point(755, 375))
-            instRect.setFill("white")
-            instRect.draw(window)
-            instMess = Text(
-                Point(530, 230),
+            instructionsRect = InfoBox(
+                window,
+                Point(500, 230),
+                590,
+                275,
                 "In this two-person game, each player gets five tiles, each with\
-            \ntwo colors (as below). The first tile chosen is placed \
-            \nhorizontally on the bottom-left corner of the board.\
-            \nThe next player must place a tile one slot above it and one\
-            \nto the right, matching the left-most color of their new tile to\
-            \nthe right-most color of the last tile placed on the board. The\
-            \ngame ends when either a player has run out of tiles (they win),\
-            \nor has no more valid moves to make (they lose). Give it a try\
-            \nand it will start to make sense. Have fun!\n\n(click to return)",
+                \ntwo colors (as below). The first tile chosen is placed \
+                \nhorizontally on the bottom-left corner of the board.\
+                \nThe next player must place a tile one slot above it and one\
+                \nto the right, matching the left-most color of their new tile to\
+                \nthe right-most color of the last tile placed on the board. The\
+                \ngame ends when either a player has run out of tiles (they win),\
+                \nor has no more valid moves to make (they lose). Give it a try\
+                \nand it will start to make sense. Have fun!\n\n(click to return)",
+                size=18,
             )
-            instMess.draw(window)
-            instMess.setSize(18)
             window.getMouse()
-            instRect.undraw()
-            instMess.undraw()
+            instructionsRect.delete()
+
         pt = window.getMouse()
 
     # creates the game grid

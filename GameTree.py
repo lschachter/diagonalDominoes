@@ -11,7 +11,7 @@ class GameTree:
     """creates and populates a tree of possibilities for the game,
     as well as does the rollback analysis"""
 
-    def __init__(self, root, rootTile: "Tile"):
+    def __init__(self, root: GNode, rootTile: "Tile"):
         """constructs the tree with the given root tile"""
         self.rootTile = rootTile
         self.root = root
@@ -40,7 +40,7 @@ class GameTree:
                 tile.switch()
             if prevCol == tile.getColor1() and tile.getMark() == 0:
                 tile.updateMark(1)
-                newNode = GNode(tile, 2, depth)
+                newNode = GNode(tile, depth)
                 node.addOutgoing(newNode)
                 self.tree[node.getDepth()].append(node)
                 newNum = playerNum % 2 + 1

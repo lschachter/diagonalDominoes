@@ -1,7 +1,7 @@
-from graphics import Rectangle, Point, Text
+from graphics import Point
 from gameTree import GameTree
 from gNode import GNode
-from button import WinButton
+from button import WinButton, InfoBox
 
 from typing import TYPE_CHECKING
 
@@ -70,7 +70,6 @@ class GamePlay:
             self.buttons[self.numClicked].die()
 
             g1 = self.grid.gridPoint(self.startX, self.startY)
-            g2 = self.grid.gridPoint(self.startX + 1, self.startY)
             self.tiles1[self.numClicked].placeTile(g1)
             self.place.deactivate()
             self.tiles1[self.numClicked].updateMark(2)
@@ -87,7 +86,7 @@ class GamePlay:
     def computerSetUp(self, rootTile: "Tile"):
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
-        self.root = GNode(rootTile, 1, 0)
+        self.root = GNode(rootTile, 0)
         self.tree = GameTree(self.root, rootTile)
         self.tree.populateTree(self.player1, self.player2)
         self.tree.setPayoffs()
@@ -122,7 +121,6 @@ class GamePlay:
     def computerMove(self, node: GNode, tile: "Tile"):
         """chooses the computer's next move based on payoff, then places it"""
         g1 = self.grid.gridPoint(self.startX, self.startY)
-        g2 = self.grid.gridPoint(self.startX + 1, self.startY)
         self.startX += 1
         self.startY -= 1
 
@@ -161,24 +159,21 @@ class GamePlay:
                 self.tiles1[self.numClicked].switch()
             elif self.place.isClicked(pt):
                 if tile.getColor2() != self.tiles1[self.numClicked].getColor1():
-                    errorRect = Rectangle(Point(249, 100), Point(748, 350))
-                    errorRect.setFill("white")
-                    errorRect.draw(self.window)
-                    errorMess = Text(
-                        Point(500, 200),
+                    errorRect = InfoBox(
+                        self.window,
+                        Point(498, 225),
+                        500,
+                        250,
                         "That move is invalid.\nChoose a tile whose left color corresponds\nto the rightmost tile-color on the board.",
+                        size=26,
                     )
-                    errorMess.draw(self.window)
-                    errorMess.setSize(26)
                     self.window.getMouse()
-                    errorRect.undraw()
-                    errorMess.undraw()
+                    errorRect.delete()
                 else:
                     self.switch.deactivate()
                     self.buttons[self.numClicked].die()
 
                     g1 = self.grid.gridPoint(self.startX, self.startY)
-                    g2 = self.grid.gridPoint(self.startX + 1, self.startY)
                     self.tiles1[self.numClicked].placeTile(g1)
                     self.place.deactivate()
                     self.tiles1[self.numClicked].updateMark(2)

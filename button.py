@@ -1,7 +1,45 @@
 from graphics import Point, Rectangle, Text, GraphWin
 
 
-class Button:
+class InfoBox:
+    """ """
+
+    def __init__(
+        self,
+        window: GraphWin,
+        center: Point,
+        width: int,
+        height: int,
+        label: str,
+        color: str = "white",
+        textColor: str = "black",
+        size=None,
+    ):
+        w, h = width / 2.0, height / 2.0
+        x, y = center.getX(), center.getY()
+        self.xmax, self.xmin = x + w, x - w
+        self.ymax, self.ymin = y + h, y - h
+        self.color = color
+        self.lColor = textColor
+        p1 = Point(self.xmin, self.ymin)
+        p2 = Point(self.xmax, self.ymax)
+        self.rect = Rectangle(p1, p2)
+        self.rect.setFill(self.color)
+        self.rect.draw(window)
+        self.label = Text(center, label)
+        self.label.setFill(self.lColor)
+        self.label.draw(window)
+        self.window = window
+
+        if size:
+            self.label.setSize(size)
+
+    def delete(self):
+        self.label.undraw()
+        self.rect.undraw()
+
+
+class Button(InfoBox):
     """A button is a labeled rectangle in a window.
     It is enabled or disabled with the activate()
     and deactivate() methods. The isClicked(pt) method
@@ -20,22 +58,17 @@ class Button:
         """Creates a rectangular button, eg:
         qb = Button(myWin, centerPoint, width, height, "black", 'Quit')
         """
-        w, h = width / 2.0, height / 2.0
-        x, y = center.getX(), center.getY()
-        self.xmax, self.xmin = x + w, x - w
-        self.ymax, self.ymin = y + h, y - h
-        self.color = color
-        self.lColor = textColor
-        p1 = Point(self.xmin, self.ymin)
-        p2 = Point(self.xmax, self.ymax)
-        self.rect = Rectangle(p1, p2)
-        self.rect.setFill(self.color)
-        self.rect.draw(window)
-        self.label = Text(center, label)
-        self.label.setFill(self.lColor)
-        self.label.draw(window)
+        super().__init__(
+            window,
+            center,
+            width,
+            height,
+            label,
+            color,
+            textColor,
+        )
+
         self.active = True
-        self.window = window
 
     def isClicked(self, pt):
         "Returns true if button active and pt is inside"
@@ -77,8 +110,7 @@ class Button:
     def die(self):
         """Effectively deletes the button"""
         self.active = False
-        self.label.undraw()
-        self.rect.undraw()
+        super().delete()
 
 
 class WinButton(Button):
