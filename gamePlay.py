@@ -3,9 +3,25 @@ from gameTree import GameTree
 from gNode import GNode
 from button import WinButton
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from grid import Grid
+    from playerCollection import PlayerCollection
+    from graphics import GraphWin
+    from button import Button
+    from tile import Tile
+
 
 class GamePlay:
-    def __init__(self, window, grid, player1, player2, quitB):
+    def __init__(
+        self,
+        window: "GraphWin",
+        grid: "Grid",
+        player1: "PlayerCollection",
+        player2: "PlayerCollection",
+        quitB: "Button",
+    ):
         """constructs the instance for game play"""
         self.window = window
         self.grid = grid
@@ -37,7 +53,7 @@ class GamePlay:
 
         self.humanMove(pt, start, start.getTile(), 2)
 
-    def startUp(self, pt):
+    def startUp(self, pt: Point):
         """Waits for the first tile to be picked by player1, then uses it to
         call to populate the tree"""
         for button in self.buttons:
@@ -55,7 +71,7 @@ class GamePlay:
 
             g1 = self.grid.gridPoint(self.startX, self.startY)
             g2 = self.grid.gridPoint(self.startX + 1, self.startY)
-            self.tiles1[self.numClicked].placeTile(g1, g2)
+            self.tiles1[self.numClicked].placeTile(g1)
             self.place.deactivate()
             self.tiles1[self.numClicked].updateMark(2)
             self.player1.updateLeft(self.tiles1[self.numClicked])
@@ -68,7 +84,7 @@ class GamePlay:
         # returns false so that the while loop gets another click
         return False
 
-    def computerSetUp(self, rootTile):
+    def computerSetUp(self, rootTile: "Tile"):
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
         self.root = GNode(rootTile, 1, 0)
@@ -95,7 +111,7 @@ class GamePlay:
             tile = newNode.getTile()
         if tile.getColor1() != self.root.getTile().getColor2():
             tile.switch()
-        tile.placeTile(g1, g2)
+        tile.placeTile(g1)
         self.player2.updateLeft(tile)
         if newNode.isEmpty():
             self.isOver = True
@@ -104,7 +120,7 @@ class GamePlay:
             button.activate()
         return newNode
 
-    def computerMove(self, node, tile, depth):
+    def computerMove(self, node: GNode, tile: "Tile"):
         """chooses the computer's next move based on payoff, then places it"""
         g1 = self.grid.gridPoint(self.startX, self.startY)
         g2 = self.grid.gridPoint(self.startX + 1, self.startY)
@@ -122,7 +138,7 @@ class GamePlay:
             newTile = newNode.getTile()
             if newTile.getColor1() != tile.getColor2():
                 newTile.switch()
-            newTile.placeTile(g1, g2)
+            newTile.placeTile(g1)
             self.player2.updateLeft(newTile)
             if node.getOutgoing()[index].isEmpty():
                 return True, True
@@ -130,7 +146,7 @@ class GamePlay:
                 button.activate()
             return newTile, newNode
 
-    def humanMove(self, pt, node, tile, depth):
+    def humanMove(self, pt: Point, node: GNode, tile: "Tile", depth: int):
         """gets clicks until player places tile correctly"""
         while not self.quitB.isClicked(pt) or not self.isOver:
             if self.quitB.isClicked(pt):
@@ -164,7 +180,7 @@ class GamePlay:
 
                     g1 = self.grid.gridPoint(self.startX, self.startY)
                     g2 = self.grid.gridPoint(self.startX + 1, self.startY)
-                    self.tiles1[self.numClicked].placeTile(g1, g2)
+                    self.tiles1[self.numClicked].placeTile(g1)
                     self.place.deactivate()
                     self.tiles1[self.numClicked].updateMark(2)
                     self.player1.updateLeft(self.tiles1[self.numClicked])
@@ -180,7 +196,7 @@ class GamePlay:
                             if iNode.getTile() == self.tiles1[self.numClicked]:
                                 newNode = iNode
                         tile, node = self.computerMove(
-                            newNode, self.tiles1[self.numClicked], depth
+                            newNode, self.tiles1[self.numClicked]
                         )
                         depth += 2
                         if tile == False:

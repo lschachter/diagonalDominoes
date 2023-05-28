@@ -1,12 +1,17 @@
 from collections import defaultdict
 from gNode import GNode
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from tile import Tile
+
 
 class GameTree:
     """creates and populates a tree of possibilities for the game,
     as well as does the rollback analysis"""
 
-    def __init__(self, root, rootTile):
+    def __init__(self, root, rootTile: "Tile"):
         """constructs the tree with the given root tile"""
         self.rootTile = rootTile
         self.root = root

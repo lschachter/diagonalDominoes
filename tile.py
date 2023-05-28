@@ -1,8 +1,13 @@
 from graphics import Point, Rectangle
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from graphics import GraphWin
+
 
 class Tile:
-    def __init__(self, color1, color2, window):
+    def __init__(self, color1: str, color2: str, window: "GraphWin"):
         """Constructs a tile object"""
         self.color1 = color1
         self.color2 = color2
@@ -16,7 +21,7 @@ class Tile:
         self.name = self.color1[0] + self.color2[0]
         self.mark = 0
 
-    def drawTile(self, pt1, pt2):
+    def drawTile(self, pt1: Point, pt2: Point):
         """Draws the tile and appends each piece of it to self.objects"""
         self.p1 = pt1
         self.p2 = pt2
@@ -60,7 +65,7 @@ class Tile:
         self.half2.setFill(self.color2)
         self.name = self.name[1] + self.name[0]
 
-    def placeTile(self, pt1, pt2):
+    def placeTile(self, pt1):
         """animates placing the tile on the board"""
         x1 = self.p1.getX()
         x2 = pt1.getX()

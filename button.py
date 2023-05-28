@@ -1,4 +1,4 @@
-from graphics import Point, Rectangle, Text
+from graphics import Point, Rectangle, Text, GraphWin
 
 
 class Button:
@@ -8,7 +8,13 @@ class Button:
     returns true if the button is enabled and pt is inside it."""
 
     def __init__(
-        self, window, center: Point, width: int, height: int, color: str, label: str
+        self,
+        window: GraphWin,
+        center: Point,
+        width: int,
+        height: int,
+        color: str,
+        label: str,
     ):
         """Creates a rectangular button, eg:
         qb = Button(myWin, centerPoint, width, height, "black", 'Quit')
