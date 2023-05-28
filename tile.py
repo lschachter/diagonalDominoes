@@ -82,7 +82,7 @@ class Tile:
         """Moves a tile, presumably one on the board, down.
         Used when more of the board needs to be seen"""
         for item in self.objects:
-            for i in range(20):
+            for _ in range(20):
                 item.move(-5, 5)
 
     def getName(self):

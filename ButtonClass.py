@@ -95,7 +95,7 @@ class Button:
 class WinButton(Button):
     def __init__(self, window, playerName):
         """Winner button"""
-        return super.__init__(
+        super().__init__(
             window,
             Point(window.getWidth() / 2, window.getHeight() / 2),
             200,
