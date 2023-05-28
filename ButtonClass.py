@@ -1,19 +1,18 @@
-# ButtonClass.py
-from graphics import *
-import math
+from graphics import Point, Rectangle, Text
 
 
 class Button:
-
     """A button is a labeled rectangle in a window.
     It is enabled or disabled with the activate()
     and deactivate() methods. The isClicked(pt) method
     returns true if the button is enabled and pt is inside it."""
 
-    def __init__(self, window, center, width, height, color, label):
+    def __init__(
+        self, window, center: Point, width: int, height: int, color: str, label: str
+    ):
         """Creates a rectangular button, eg:
-        qb = Button(myWin, centerPoint, width, height, "black", 'Quit')"""
-
+        qb = Button(myWin, centerPoint, width, height, "black", 'Quit')
+        """
         w, h = width / 2.0, height / 2.0
         x, y = center.getX(), center.getY()
         self.xmax, self.xmin = x + w, x - w

@@ -1,5 +1,4 @@
-from graphics import *
-from gNode import *
+from graphics import Point, Rectangle
 
 
 class Tile:
@@ -73,7 +72,7 @@ class Tile:
             xDist = -xDist
         if y1 > y2:
             yDist = -yDist
-        for i in range(50):
+        for _ in range(50):
             self.box.move(xDist / 50, yDist / 50)
             self.half1.move(xDist / 50, yDist / 50)
             self.half2.move(xDist / 50, yDist / 50)

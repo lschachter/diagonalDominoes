@@ -1,5 +1,5 @@
 from collections import defaultdict
-from gNode import *
+from gNode import GNode
 
 
 class GameTree:

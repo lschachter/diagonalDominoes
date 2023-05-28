@@ -1,11 +1,12 @@
-from graphics import *
 from random import randrange
-from tile import *
-from ButtonClass import *
+
+from graphics import Point, Text
+from tile import Tile
+from ButtonClass import Button
 
 
 class PlayerCollection:
-    def __init__(self, window: GraphWin, top: Point, player: int):
+    def __init__(self, window, top: Point, player: int):
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
