@@ -9,14 +9,11 @@ if TYPE_CHECKING:
 class Tile:
     def __init__(self, color1: str, color2: str, window: "GraphWin"):
         """Constructs a tile object"""
-        self.color1 = color1
-        self.color2 = color2
         self.window = window
         self.squareWidth = 50
         self.squareHeight = 50
         self.objects = []
-        self.colors = [self.color1, self.color2]
-        self.name = self.color1[0] + self.color2[0]
+        self.colors = [color1, color2]
         self.mark = 0
 
     def drawTile(self, pt1: Point, pt2: Point):
@@ -41,7 +38,7 @@ class Tile:
 
         def buildTileColor(offset):
             rectX, rectY = (rectX1, rectY1) if offset == 1 else (rectX2, rectY2)
-            color = self.color1 if offset == 1 else self.color2
+            color = self.colors[0] if offset == 1 else self.colors[1]
             half = Rectangle(
                 Point(rectX + (3 * offset), rectY - (3 * offset)),
                 Point(rectX + (47 * offset), rectY - (47 * offset)),
@@ -56,15 +53,14 @@ class Tile:
 
     def __str__(self):
         """allows the tile object to print out readably"""
-        return "[" + self.color1 + ", " + self.color2 + "]"
+        return "[" + self.colors[0] + ", " + self.colors[1] + "]"
 
     def switch(self):
         """Switches the colors of the tile, as if the player
         flipped the tile over"""
-        self.color1, self.color2 = self.color2, self.color1
-        self.half1.setFill(self.color1)
-        self.half2.setFill(self.color2)
-        self.name = self.name[1] + self.name[0]
+        self.colors.reverse()
+        self.half1.setFill(self.colors[0])
+        self.half2.setFill(self.colors[1])
 
     def placeTile(self, pt1):
         """animates placing the tile on the board"""
@@ -84,7 +80,7 @@ class Tile:
 
     def getName(self):
         """returns the name of the tile"""
-        return self.name
+        return self.colors[0][0] + self.colors[1][0]
 
     def getMark(self):
         """returns whether or not the tile is marked"""
@@ -101,8 +97,8 @@ class Tile:
 
     def getColor1(self):
         """returns the left color of the tile"""
-        return self.color1
+        return self.colors[0]
 
     def getColor2(self):
         """returns the right color of the tile"""
-        return self.color2
+        return self.colors[1]
