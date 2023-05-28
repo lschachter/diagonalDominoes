@@ -53,11 +53,11 @@ class GameTree:
                     else:
                         newNode.updatePayoff(-1)
 
-    def getTile(self, node):
+    def getTile(self, node: GNode):
         """returns the tile associated with the node"""
         return node.getTile()
 
-    def payoffAt2(self, node):
+    def payoffAt2(self, node: GNode):
         """returns 1 if any path from the future of this decision returns
         a loss for the computer, and -1 if all choices from therein result
         in a computer win NOT USED"""
@@ -69,7 +69,7 @@ class GameTree:
                     return 1
             return -1
 
-    def payoffAt(self, node):
+    def payoffAt(self, node: GNode):
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():

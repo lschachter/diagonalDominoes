@@ -5,14 +5,14 @@ from ButtonClass import *
 
 
 class PlayerCollection:
-    def __init__(self, window, top, player):
+    def __init__(self, window: GraphWin, top: Point, player: int):
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
         self.top = top
         self.x = self.top.getX()
         self.player = player
-        self.set = []
+        self.tiles = []
         self.choiceButtons = []
         self.squareWidth = 50
         self.squareHeight = 50
@@ -30,14 +30,14 @@ class PlayerCollection:
             (2, 2),
             (3, 3),
         ]
-        for i in range(5):
+        for _ in range(5):
             index = randrange(len(cs))
             col1, col2 = cs[index][0], cs[index][1]
             c1 = color[col1]
             c2 = color[col2]
             cs.remove(cs[index])
             tile = Tile(c1, c2, self.window)
-            self.set.append(tile)
+            self.tiles.append(tile)
             self.left.append(tile)
 
         info = Text(self.top, "Player " + str(self.player) + " Collection")
@@ -49,7 +49,7 @@ class PlayerCollection:
         as well as the polygon to cover the tiles should
         the game go so long as to require the board to shift"""
         y = self.top.getY() + 50
-        for tile in self.set:
+        for tile in self.tiles:
             tile.drawTile(Point(self.x - 25, y), Point(self.x + 25, y))
             y += 80
 
@@ -76,16 +76,16 @@ class PlayerCollection:
         self.placeB.offSet(0, 25)
         self.placeB.deactivate()
         y = self.top.getY() + 85
-        for _ in self.set:
+        for _ in self.tiles:
             button = Button(self.window, Point(self.x, y), 10, 8, "white", "Choose")
             button.offSet(0, 10)
             button.activate()
             self.choiceButtons.append(button)
             y += 80
 
-    def getTileSet(self):
+    def gettiles(self):
         """returns the set of tiles"""
-        return self.set
+        return self.tiles
 
     def getButtonSet(self):
         """returns the set of buttons used to choose the next tile"""
@@ -103,6 +103,6 @@ class PlayerCollection:
         """returns the tiles left in the player's hand"""
         return self.left
 
-    def updateLeft(self, tile):
+    def updateLeft(self, tile: Tile):
         """updates the tiles left in the player's hand"""
         self.left.remove(tile)

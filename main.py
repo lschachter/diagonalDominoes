@@ -19,7 +19,7 @@ def main():
     instB.setTextSize(24)
     x = 100
     y = 500
-    for i in range(6):
+    for _ in range(6):
         c1 = color_rgb(randrange(255), randrange(255), randrange(255))
         c2 = color_rgb(randrange(255), randrange(255), randrange(255))
         tile = Tile(c1, c2, window)
