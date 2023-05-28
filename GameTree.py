@@ -62,44 +62,32 @@ class GameTree:
         """returns the tile associated with the node"""
         return node.getTile()
 
-    def payoffAt2(self, node: GNode):
-        """returns 1 if any path from the future of this decision returns
-        a loss for the computer, and -1 if all choices from therein result
-        in a computer win NOT USED"""
-        if node.isEmpty():
-            return node.getPayoff()
-        else:
-            for child in node.getOutgoing():
-                if self.payoffAt(child) == 1:
-                    return 1
-            return -1
-
     def payoffAt(self, node: GNode):
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
             return node.getPayoff()
+
+        childPays = []
+        for child in node.getOutgoing():
+            childPays.append(child.getPayoff())
+        if node.getDepth() % 2 == 0:  # then these are your choices
+            return min(childPays)
         else:
-            childPays = []
-            for child in node.getOutgoing():
-                childPays.append(child.getPayoff())
-            if node.getDepth() % 2 == 0:  # then these are your choices
-                return min(childPays)
-            else:
-                numPos = 1
-                numNeg = 1
-                for num in childPays:
-                    if num <= 0:
-                        numNeg += 1
-                    else:
-                        numPos += 1
-                pay = numPos / numNeg
-                if pay > 1:
-                    return numNeg / numPos
-                elif pay == 1:
-                    return 0
+            numPos = 1
+            numNeg = 1
+            for num in childPays:
+                if num <= 0:
+                    numNeg += 1
                 else:
-                    return -pay
+                    numPos += 1
+            pay = numPos / numNeg
+            if pay > 1:
+                return numNeg / numPos
+            elif pay == 1:
+                return 0
+            else:
+                return -pay
 
     def setPayoffs(self):
         """sets the payoffs for all nodes"""
