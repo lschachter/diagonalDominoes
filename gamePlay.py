@@ -1,5 +1,5 @@
 from graphics import Rectangle, Point, Text
-from GameTree import GameTree
+from gameTree import GameTree
 from gNode import GNode
 from button import WinButton
 
