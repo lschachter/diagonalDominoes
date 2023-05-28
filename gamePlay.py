@@ -158,6 +158,9 @@ class GamePlay:
             if self.switch.isClicked(pt):
                 self.tiles1[self.numClicked].switch()
             elif self.place.isClicked(pt):
+                if tile.getColor2() == self.tiles1[self.numClicked].getColor2():
+                    self.tiles1[self.numClicked].switch()
+
                 if tile.getColor2() != self.tiles1[self.numClicked].getColor1():
                     errorRect = InfoBox(
                         self.window,

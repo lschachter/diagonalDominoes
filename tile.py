@@ -69,15 +69,11 @@ class Tile:
 
     def placeTile(self, pt1):
         """animates placing the tile on the board"""
-        x1 = self.p1.getX()
-        x2 = pt1.getX()
-        xDist = abs(x1 - x2)
-        y1 = self.p1.getY()
-        y2 = pt1.getY()
-        yDist = abs(y1 - y2)
-        if x1 > x2:
+        xDist = abs(self.p1.getX() - pt1.getX())
+        yDist = abs(self.p1.getY() - pt1.getY())
+        if self.p1.getX() > pt1.getX():
             xDist = -xDist
-        if y1 > y2:
+        if self.p1.getY() > pt1.getY():
             yDist = -yDist
         self.moveTile(xDist, yDist, 50)
 
