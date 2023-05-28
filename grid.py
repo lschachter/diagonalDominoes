@@ -1,9 +1,14 @@
 from graphics import Rectangle, Point
 from button import Button
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from graphics import GraphWin
+
 
 class Grid:
-    def __init__(self, window):
+    def __init__(self, window: "GraphWin"):
         """Constructs the game grid"""
         self.width = window.getWidth()
         self.height = window.getHeight()
@@ -47,10 +52,10 @@ class Grid:
             Point(self.width / 2, self.height - 30),
             50,
             40,
-            "black",
             "Quit",
+            color="black",
+            textColor="white",
         )
-        self.quitB.setTextColor("white")
 
     def getWin(self):
         """returns the graphical window"""
@@ -60,16 +65,9 @@ class Grid:
         """returns the quit button"""
         return self.quitB
 
-    def gridPoint(self, x, y):
+    def gridPoint(self, x: int, y: int):
         """returns the centerpoint of a given grid square"""
         return self.grid[x][y].getCenter()
-
-    def moveGrid(self):
-        """moves the grid so a different portion of the board is shown"""
-        for row in self.grid:
-            for square in row:
-                for i in range(20):
-                    square.move(-5, 5)
 
     def closeGrid(self):
         """closes the grid"""

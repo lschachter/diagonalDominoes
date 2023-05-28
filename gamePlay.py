@@ -94,7 +94,6 @@ class GamePlay:
         # self.tree.printTree() # UNCOMMENT LINE TO SEE TREE PRINT
 
         g1 = self.grid.gridPoint(self.startX, self.startY)
-        g2 = self.grid.gridPoint(self.startX + 1, self.startY)
         self.startX += 1
         self.startY -= 1
 

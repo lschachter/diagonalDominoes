@@ -16,11 +16,19 @@ def main():
     text = Text(Point(500, 120), "Diagonal Dominoes")
     text.draw(window)
     text.setSize(36)
-    gameB = Button(window, Point(350, 300), 200, 150, "black", "Play Game")
-    gameB.setTextColor("white")
+    gameB = Button(
+        window, Point(350, 300), 200, 150, "Play Game", color="black", textColor="white"
+    )
     gameB.setTextSize(24)
-    instB = Button(window, Point(650, 300), 200, 150, "black", "Instructions")
-    instB.setTextColor("white")
+    instB = Button(
+        window,
+        Point(650, 300),
+        200,
+        150,
+        "Instructions",
+        color="black",
+        textColor="white",
+    )
     instB.setTextSize(24)
     x = 100
     y = 500

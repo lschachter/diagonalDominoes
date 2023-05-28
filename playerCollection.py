@@ -61,7 +61,6 @@ class PlayerCollection:
             Point(self.x - 35, self.window.getHeight() - 100),
             12,
             10,
-            "white",
             "Switch Tile \nOrientation",
         )
         self.switchB.offSet(0, 25)
@@ -71,14 +70,13 @@ class PlayerCollection:
             Point(self.x + 35, self.window.getHeight() - 100),
             12,
             10,
-            "white",
             "Place Tile",
         )
         self.placeB.offSet(0, 25)
         self.placeB.deactivate()
         y = self.top.getY() + 85
         for _ in self.tiles:
-            button = Button(self.window, Point(self.x, y), 10, 8, "white", "Choose")
+            button = Button(self.window, Point(self.x, y), 10, 8, "Choose")
             button.offSet(0, 10)
             button.activate()
             self.choiceButtons.append(button)
