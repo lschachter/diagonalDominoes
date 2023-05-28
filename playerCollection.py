@@ -2,7 +2,7 @@ from random import randrange
 
 from graphics import Point, Text
 from tile import Tile
-from button import Button
+from button import DrawButton
 
 from typing import TYPE_CHECKING
 
@@ -61,7 +61,7 @@ class PlayerCollection:
 
     def humanSetup(self):
         """Creates the buttons needed for a human player"""
-        self.switchB = Button(
+        self.switchB = DrawButton(
             self.window,
             Point(self.x - 35, self.window.getHeight() - 100),
             12,
@@ -70,7 +70,7 @@ class PlayerCollection:
         )
         self.switchB.offSet(0, 25)
         self.switchB.deactivate()
-        self.placeB = Button(
+        self.placeB = DrawButton(
             self.window,
             Point(self.x + 35, self.window.getHeight() - 100),
             12,
@@ -81,7 +81,7 @@ class PlayerCollection:
         self.placeB.deactivate()
         y = self.top.getY() + 85
         for _ in self.tiles:
-            button = Button(self.window, Point(self.x, y), 10, 8, "Choose")
+            button = DrawButton(self.window, Point(self.x, y), 10, 8, "Choose")
             button.offSet(0, 10)
             button.activate()
             self.choiceButtons.append(button)

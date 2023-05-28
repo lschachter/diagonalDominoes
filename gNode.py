@@ -1,8 +1,14 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from tile import Tile
+
+
 class GNode:
     """a GNode is just an object that holds a tile and all the tiles
     that that tile can reach"""
 
-    def __init__(self, tile, depth: int):
+    def __init__(self, tile: "Tile", depth: int):
         """constructs the node"""
         self.tile = tile
         self.outgoing = []

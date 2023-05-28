@@ -2,7 +2,7 @@ from random import randrange
 
 from graphics import GraphWin, Text, Point, color_rgb
 from grid import Grid
-from button import Button, InfoBox
+from button import DrawButton, DrawInfoBox
 from playerCollection import PlayerCollection
 from gamePlay import GamePlay
 from tile import Tile
@@ -16,11 +16,11 @@ def main():
     text = Text(Point(500, 120), "Diagonal Dominoes")
     text.draw(window)
     text.setSize(36)
-    gameB = Button(
+    gameB = DrawButton(
         window, Point(350, 300), 200, 150, "Play Game", color="black", textColor="white"
     )
     gameB.setTextSize(24)
-    instB = Button(
+    instB = DrawButton(
         window,
         Point(650, 300),
         200,
@@ -43,7 +43,7 @@ def main():
     # instructions
     while not gameB.isClicked(pt):
         if instB.isClicked(pt):
-            instructionsRect = InfoBox(
+            instructionsRect = DrawInfoBox(
                 window,
                 Point(500, 230),
                 590,
