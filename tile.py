@@ -14,8 +14,6 @@ class Tile:
         self.window = window
         self.squareWidth = 50
         self.squareHeight = 50
-        self.p1 = Point(0, 0)
-        self.p2 = Point(0, 0)
         self.objects = []
         self.colors = [self.color1, self.color2]
         self.name = self.color1[0] + self.color2[0]
@@ -29,15 +27,17 @@ class Tile:
         x2 = pt2.getX()
         y1 = pt1.getY()
         y2 = pt2.getY()
+
         rectX1 = min(x1, x2) - 25
         rectY1 = max(y1, y2) + 25
         rectX2 = max(x1, x2) + 25
         rectY2 = min(y1, y2) - 25
-        self.box = Rectangle(Point(rectX1, rectY1), Point(rectX2, rectY2))
-        self.box.draw(self.window)
-        self.box.setFill("brown")
-        self.box.setOutline("brown")
-        self.objects.append(self.box)
+
+        def drawObject(object, fillColor):
+            object.draw(self.window)
+            object.setFill(fillColor)
+            object.setOutline("brown")
+            self.objects.append(object)
 
         def buildTileColor(offset):
             rectX, rectY = (rectX1, rectY1) if offset == 1 else (rectX2, rectY2)
@@ -46,12 +46,11 @@ class Tile:
                 Point(rectX + (3 * offset), rectY - (3 * offset)),
                 Point(rectX + (47 * offset), rectY - (47 * offset)),
             )
-            half.draw(self.window)
-            half.setFill(color)
-            half.setOutline("brown")
-            self.objects.append(half)
+            drawObject(half, color)
             return half
 
+        self.box = Rectangle(Point(rectX1, rectY1), Point(rectX2, rectY2))
+        drawObject(self.box, "brown")
         self.half1 = buildTileColor(1)
         self.half2 = buildTileColor(-1)
 

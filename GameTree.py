@@ -73,21 +73,21 @@ class GameTree:
             childPays.append(child.getPayoff())
         if node.getDepth() % 2 == 0:  # then these are your choices
             return min(childPays)
-        else:
-            numPos = 1
-            numNeg = 1
-            for num in childPays:
-                if num <= 0:
-                    numNeg += 1
-                else:
-                    numPos += 1
-            pay = numPos / numNeg
-            if pay > 1:
-                return numNeg / numPos
-            elif pay == 1:
-                return 0
+
+        numPos = 1
+        numNeg = 1
+        for num in childPays:
+            if num <= 0:
+                numNeg += 1
             else:
-                return -pay
+                numPos += 1
+        pay = numPos / numNeg
+        if pay > 1:
+            return numNeg / numPos
+        elif pay == 1:
+            return 0
+        else:
+            return -pay
 
     def setPayoffs(self):
         """sets the payoffs for all nodes"""

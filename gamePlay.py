@@ -45,10 +45,11 @@ class GamePlay:
             if self.quitB.isClicked(pt):
                 self.window.close()
                 break
-            else:
-                start = self.startUp(pt)
+
+            start = self.startUp(pt)
             if start != False:
                 break
+
             pt = self.window.getMouse()
 
         self.humanMove(pt, start, start.getTile(), 2)
