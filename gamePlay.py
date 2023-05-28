@@ -100,13 +100,13 @@ class GamePlay:
             WinButton(self.window, "1")
             self.isOver = True
             return False
-        else:
-            pays = []
-            for node in self.root.getOutgoing():
-                pays.append(node.getPayoff())
-            index = pays.index(min(pays))
-            newNode = self.root.getOutgoing()[index]
-            tile = newNode.getTile()
+
+        pays = []
+        for node in self.root.getOutgoing():
+            pays.append(node.getPayoff())
+        index = pays.index(min(pays))
+        newNode = self.root.getOutgoing()[index]
+        tile = newNode.getTile()
         if tile.getColor1() != self.root.getTile().getColor2():
             tile.switch()
         tile.placeTile(g1)
@@ -126,22 +126,23 @@ class GamePlay:
 
         if node.isEmpty():
             return False, False
-        else:
-            pays = []
-            for child in node.getOutgoing():
-                pays.append(child.getPayoff())
-            index = pays.index(min(pays))
-            newNode = node.getOutgoing()[index]
-            newTile = newNode.getTile()
-            if newTile.getColor1() != tile.getColor2():
-                newTile.switch()
-            newTile.placeTile(g1)
-            self.player2.updateLeft(newTile)
-            if node.getOutgoing()[index].isEmpty():
-                return True, True
-            for button in self.buttons:
-                button.activate()
-            return newTile, newNode
+
+        pays = []
+        for child in node.getOutgoing():
+            pays.append(child.getPayoff())
+        index = pays.index(min(pays))
+        newNode = node.getOutgoing()[index]
+        newTile = newNode.getTile()
+        if newTile.getColor1() != tile.getColor2():
+            newTile.switch()
+        newTile.placeTile(g1)
+        self.player2.updateLeft(newTile)
+        if node.getOutgoing()[index].isEmpty():
+            return True, True
+
+        for button in self.buttons:
+            button.activate()
+        return newTile, newNode
 
     def humanMove(self, pt: Point, node: GNode, tile: "Tile", depth: int):
         """gets clicks until player places tile correctly"""
