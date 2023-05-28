@@ -1,5 +1,5 @@
 from graphics import Rectangle, Point
-from ButtonClass import Button
+from button import Button
 
 
 class Grid:

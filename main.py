@@ -2,7 +2,7 @@ from random import randrange
 
 from graphics import GraphWin, Text, Point, color_rgb, Rectangle
 from grid import Grid
-from ButtonClass import Button
+from button import Button
 from playerCollection import PlayerCollection
 from gamePlay import GamePlay
 from tile import Tile

@@ -2,7 +2,7 @@ from random import randrange
 
 from graphics import Point, Text
 from tile import Tile
-from ButtonClass import Button
+from button import Button
 
 
 class PlayerCollection:

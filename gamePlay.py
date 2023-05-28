@@ -1,7 +1,7 @@
 from graphics import Rectangle, Point, Text
 from GameTree import GameTree
 from gNode import GNode
-from ButtonClass import WinButton
+from button import WinButton
 
 
 class GamePlay:
