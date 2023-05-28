@@ -38,20 +38,22 @@ class Tile:
         self.box.setFill("brown")
         self.box.setOutline("brown")
         self.objects.append(self.box)
-        self.half1 = Rectangle(
-            Point(rectX1 + 3, rectY1 - 3), Point(rectX1 + 47, rectY1 - 47)
-        )
-        self.half1.draw(self.window)
-        self.half1.setFill(self.color1)
-        self.half1.setOutline("brown")
-        self.objects.append(self.half1)
-        self.half2 = Rectangle(
-            Point(rectX2 - 3, rectY2 + 3), Point(rectX2 - 47, rectY2 + 47)
-        )
-        self.half2.draw(self.window)
-        self.half2.setFill(self.color2)
-        self.half2.setOutline("brown")
-        self.objects.append(self.half2)
+
+        def buildTileColor(offset):
+            rectX, rectY = (rectX1, rectY1) if offset == 1 else (rectX2, rectY2)
+            color = self.color1 if offset == 1 else self.color2
+            half = Rectangle(
+                Point(rectX + (3 * offset), rectY - (3 * offset)),
+                Point(rectX + (47 * offset), rectY - (47 * offset)),
+            )
+            half.draw(self.window)
+            half.setFill(color)
+            half.setOutline("brown")
+            self.objects.append(half)
+            return half
+
+        self.half1 = buildTileColor(1)
+        self.half2 = buildTileColor(-1)
 
     def __str__(self):
         """allows the tile object to print out readably"""
@@ -77,17 +79,13 @@ class Tile:
             xDist = -xDist
         if y1 > y2:
             yDist = -yDist
-        for _ in range(50):
-            self.box.move(xDist / 50, yDist / 50)
-            self.half1.move(xDist / 50, yDist / 50)
-            self.half2.move(xDist / 50, yDist / 50)
+        self.moveTile(xDist, yDist, 50)
 
-    def moveTile(self):
-        """Moves a tile, presumably one on the board, down.
-        Used when more of the board needs to be seen"""
-        for item in self.objects:
-            for _ in range(20):
-                item.move(-5, 5)
+    def moveTile(self, x, y, dist):
+        """Moves a tile"""
+        for _ in range(dist):
+            for item in self.objects:
+                item.move(x / 50, y / 50)
 
     def getName(self):
         """returns the name of the tile"""
