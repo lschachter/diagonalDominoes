@@ -57,32 +57,30 @@ class GamePlay:
     def startUp(self, pt: Point):
         """Waits for the first tile to be picked by player1, then uses it to
         call to populate the tree"""
-        for button in self.buttons:
-            if button.isClicked(pt):
-                self.buttons[self.numClicked].unchoose()
-                button.choose()
-                self.switch.activate()
-                self.place.activate()
-                self.numClicked = self.buttons.index(button)
+        self.checkTileButtons(pt)
+
         if self.switch.isClicked(pt):
             self.tiles1[self.numClicked].switch()
         elif self.place.isClicked(pt):
-            self.switch.deactivate()
-            self.buttons[self.numClicked].die()
-
-            g1 = self.grid.gridPoint(self.startX, self.startY)
-            self.tiles1[self.numClicked].placeTile(g1)
-            self.place.deactivate()
-            self.tiles1[self.numClicked].updateMark(2)
-            self.player1.updateLeft(self.tiles1[self.numClicked])
-            for button in self.buttons:
-                button.deactivate()
-            self.startX += 1
-            self.startY -= 1
+            self.placeHumanTile()
             return self.computerSetUp(self.tiles1[self.numClicked])
 
         # returns false so that the while loop gets another click
         return False
+
+    def placeHumanTile(self):
+        self.switch.deactivate()
+        self.buttons[self.numClicked].die()
+
+        gridPoint = self.grid.gridPoint(self.startX, self.startY)
+        self.tiles1[self.numClicked].placeTile(gridPoint)
+        self.place.deactivate()
+        self.tiles1[self.numClicked].updateMark(2)
+        self.player1.updateLeft(self.tiles1[self.numClicked])
+        for button in self.buttons:
+            button.deactivate()
+        self.startX += 1
+        self.startY -= 1
 
     def computerSetUp(self, rootTile: "Tile"):
         """creates an instance of the game tree and calls to populate it,
@@ -150,13 +148,10 @@ class GamePlay:
         while not self.quitB.isClicked(pt) or not self.isOver:
             if self.quitB.isClicked(pt):
                 break
-            for button in self.buttons:
-                if button.isClicked(pt):
-                    self.buttons[self.numClicked].unchoose()
-                    button.choose()
-                    self.switch.activate()
-                    self.place.activate()
-                    self.numClicked = self.buttons.index(button)
+
+            # Check if a tile was selected
+            self.checkTileButtons(pt)
+
             if self.switch.isClicked(pt):
                 self.tiles1[self.numClicked].switch()
             elif self.place.isClicked(pt):
@@ -166,7 +161,7 @@ class GamePlay:
                 if tile.getColor2() != self.tiles1[self.numClicked].getColor1():
                     errorRect = DrawInfoBox(
                         self.window,
-                        Point(498, 225),
+                        Point(496, 225),
                         500,
                         250,
                         "That move is invalid.\nChoose a tile whose left color corresponds\nto the rightmost tile-color on the board.",
@@ -175,18 +170,7 @@ class GamePlay:
                     self.window.getMouse()
                     errorRect.delete()
                 else:
-                    self.switch.deactivate()
-                    self.buttons[self.numClicked].die()
-
-                    g1 = self.grid.gridPoint(self.startX, self.startY)
-                    self.tiles1[self.numClicked].placeTile(g1)
-                    self.place.deactivate()
-                    self.tiles1[self.numClicked].updateMark(2)
-                    self.player1.updateLeft(self.tiles1[self.numClicked])
-                    for button in self.buttons:
-                        button.deactivate()
-                    self.startX += 1
-                    self.startY -= 1
+                    self.placeHumanTile()
                     if depth == 8:
                         self.isOver = True
                         DrawWinButton(self.window, "1")
@@ -194,6 +178,7 @@ class GamePlay:
                         for iNode in node.getOutgoing():
                             if iNode.getTile() == self.tiles1[self.numClicked]:
                                 newNode = iNode
+                                break
                         tile, node = self.computerMove(
                             newNode, self.tiles1[self.numClicked]
                         )
@@ -207,3 +192,12 @@ class GamePlay:
 
             pt = self.window.getMouse()
         self.window.close()
+
+    def checkTileButtons(self, pt):
+        for button in self.buttons:
+            if button.isClicked(pt):
+                self.buttons[self.numClicked].unchoose()
+                button.choose()
+                self.switch.activate()
+                self.place.activate()
+                self.numClicked = self.buttons.index(button)

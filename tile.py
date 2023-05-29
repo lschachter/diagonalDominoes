@@ -10,8 +10,7 @@ class Tile:
     def __init__(self, color1: str, color2: str, window: "GraphWin"):
         """Constructs a tile object"""
         self.window = window
-        self.squareWidth = 50
-        self.squareHeight = 50
+        self.squareWidth = self.squareHeight = 50
         self.objects = []
         self.colors = [color1, color2]
         self.mark = 0
