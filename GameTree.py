@@ -44,7 +44,7 @@ class GameTree:
                 tile.updateMark(1)
                 newNode = GNode(tile, depth)
                 node.addOutgoing(newNode)
-                self.tree[node.getDepth()].append(node)
+                self.tree[node.getDepth()].add(node)
                 self.nextMove(
                     self.players[player.getPlayerNum() % 2],
                     depth + 1,
