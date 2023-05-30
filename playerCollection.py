@@ -11,17 +11,15 @@ if TYPE_CHECKING:
 
 
 class PlayerCollection:
-    def __init__(self, window: "GraphWin", top: Point, player: int) -> None:
+    def __init__(self, window: "GraphWin", top: Point, playerNum: int) -> None:
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
         self.top = top
-        self.x = self.top.getX()
-        self.playerNum = player
+        self.playerNum = playerNum
         self.tiles = []
         self.choiceButtons = []
-        self.squareWidth = 50
-        self.squareHeight = 50
+        self.squareWidth = self.squareHeight = 50
         self.left = []
         color = ["green", "blue", "red", "yellow"]
         cs = [
@@ -56,14 +54,16 @@ class PlayerCollection:
         the game go so long as to require the board to shift"""
         y = self.top.getY() + 50
         for tile in self.tiles:
-            tile.drawTile(Point(self.x - 25, y), Point(self.x + 25, y))
+            tile.drawTile(
+                Point(self.top.getX() - 25, y), Point(self.top.getX() + 25, y)
+            )
             y += 80
 
     def humanSetup(self) -> None:
         """Creates the buttons needed for a human player"""
         self.switchB = Button(
             self.window,
-            Point(self.x - 35, self.window.getHeight() - 100),
+            Point(self.top.getX() - 35, self.window.getHeight() - 100),
             12,
             10,
             "Switch Tile \nOrientation",
@@ -72,7 +72,7 @@ class PlayerCollection:
         self.switchB.deactivate()
         self.placeB = Button(
             self.window,
-            Point(self.x + 35, self.window.getHeight() - 100),
+            Point(self.top.getX() + 35, self.window.getHeight() - 100),
             12,
             10,
             "Place Tile",
@@ -81,7 +81,7 @@ class PlayerCollection:
         self.placeB.deactivate()
         y = self.top.getY() + 85
         for _ in self.tiles:
-            button = Button(self.window, Point(self.x, y), 10, 8, "Choose")
+            button = Button(self.window, Point(self.top.getX(), y), 10, 8, "Choose")
             button.offSet(0, 10)
             button.activate()
             self.choiceButtons.append(button)

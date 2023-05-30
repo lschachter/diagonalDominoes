@@ -12,11 +12,8 @@ class GameTree:
     """creates and populates a tree of possibilities for the game,
     as well as does the rollback analysis"""
 
-    def __init__(
-        self, root: GNode, rootTile: "Tile", players: List["PlayerCollection"]
-    ) -> None:
+    def __init__(self, root: GNode, players: List["PlayerCollection"]) -> None:
         """constructs the tree with the given root tile"""
-        self.rootTile = rootTile
         self.root = root
         self.tree = defaultdict(set)
         self.tree[0].add(self.root)
@@ -25,7 +22,7 @@ class GameTree:
     def populateTree(self) -> None:
         """gives the player tile collections and relevant info to the recursive
         function 'nextMove' to populate the tree"""
-        self.nextMove(self.players[1], 1, self.root, self.rootTile.getColor2())
+        self.nextMove(self.players[1], 1, self.root, self.root.getTile().getColor2())
 
     def nextMove(
         self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
@@ -34,23 +31,27 @@ class GameTree:
         for tile in player.getLeft():
             if prevCol == tile.getColor2():
                 tile.switch()
-            if prevCol == tile.getColor1() and tile.getMark() == 0:
-                tile.updateMark(1)
-                newNode = GNode(tile, depth)
-                node.addChild(newNode)
-                self.tree[node.getDepth()].add(node)
-                self.nextMove(
-                    self.players[player.getPlayerNum() % 2],
-                    depth + 1,
-                    newNode,
-                    tile.getColor2(),
-                )
-                tile.updateMark(0)
-                if newNode.isEmpty():
-                    if newNode.getDepth() == 9 or newNode.getDepth() % 2 == 0:
-                        newNode.updatePayoff(1)
-                    else:
-                        newNode.updatePayoff(-1)
+
+            if prevCol != tile.getColor1() or tile.getMark() != 0:
+                # Ignore tiles that don't match the color or that have been used
+                continue
+
+            tile.updateMark(1)
+            newNode = GNode(tile, depth)
+            node.addChild(newNode)
+            self.tree[node.getDepth()].add(node)
+            self.nextMove(
+                self.players[player.getPlayerNum() % 2],
+                depth + 1,
+                newNode,
+                tile.getColor2(),
+            )
+            tile.updateMark(0)
+            if newNode.isEmpty():
+                if newNode.getDepth() == 9 or newNode.getDepth() % 2 == 0:
+                    newNode.updatePayoff(1)
+                else:
+                    newNode.updatePayoff(-1)
 
     def getTile(self, node: GNode) -> "Tile":
         """returns the tile associated with the node"""

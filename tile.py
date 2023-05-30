@@ -19,23 +19,19 @@ class Tile:
         """Draws the tile and appends each piece of it to self.objects"""
         self.p1 = pt1
         self.p2 = pt2
-        x1 = pt1.getX()
-        x2 = pt2.getX()
-        y1 = pt1.getY()
-        y2 = pt2.getY()
 
-        rectX1 = min(x1, x2) - 25
-        rectY1 = max(y1, y2) + 25
-        rectX2 = max(x1, x2) + 25
-        rectY2 = min(y1, y2) - 25
+        rectX1 = min(pt1.getX(), pt2.getX()) - 25
+        rectY1 = max(pt1.getY(), pt2.getY()) + 25
+        rectX2 = max(pt1.getX(), pt2.getX()) + 25
+        rectY2 = min(pt1.getY(), pt2.getY()) - 25
 
-        def drawObject(object, fillColor):
+        def drawObject(object, fillColor: str) -> None:
             object.draw(self.window)
             object.setFill(fillColor)
             object.setOutline("brown")
             self.objects.append(object)
 
-        def buildTileColor(offset):
+        def buildTileColor(offset: int) -> Rectangle:
             rectX, rectY = (rectX1, rectY1) if offset == 1 else (rectX2, rectY2)
             color = self.colors[0] if offset == 1 else self.colors[1]
             half = Rectangle(
@@ -61,7 +57,7 @@ class Tile:
         self.half1.setFill(self.colors[0])
         self.half2.setFill(self.colors[1])
 
-    def placeTile(self, pt1) -> None:
+    def placeTile(self, pt1: Point) -> None:
         """animates placing the tile on the board"""
         xDist = abs(self.p1.getX() - pt1.getX())
         yDist = abs(self.p1.getY() - pt1.getY())
@@ -71,7 +67,7 @@ class Tile:
             yDist = -yDist
         self.moveTile(xDist, yDist, 50)
 
-    def moveTile(self, x, y, dist) -> None:
+    def moveTile(self, x: int, y: int, dist: int) -> None:
         """Moves a tile"""
         for _ in range(dist):
             for item in self.objects:
@@ -85,7 +81,7 @@ class Tile:
         """returns the tile's mark"""
         return self.mark
 
-    def updateMark(self, num) -> None:
+    def updateMark(self, num: int) -> None:
         """updates the tile's mark:
         0 == unused
         1 == used in the current AI check

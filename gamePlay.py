@@ -31,11 +31,9 @@ class GamePlay:
         self.startY = 8
         self.quitB = quitB
         self.buttons = player1.getButtonSet()
-        self.tiles1 = player1.getTiles()
+        self.humanTiles = player1.getTiles()
         self.switch, self.place = player1.getMoveSet()
-        self.usedTiles = []
         self.numClicked = 0
-        self.isOver = False
 
     def playGame(self) -> None:
         """begins the game"""
@@ -60,23 +58,20 @@ class GamePlay:
         self.checkTileButtons(pt)
 
         if self.switch.isClicked(pt):
-            self.tiles1[self.numClicked].switch()
+            self.humanTiles[self.numClicked].switch()
         elif self.place.isClicked(pt):
             self.placeHumanTile()
-            return self.computerSetUp(self.tiles1[self.numClicked])
-
-        # returns None so that the while loop gets another click
-        return None
+            return self.computerSetUp(self.humanTiles[self.numClicked])
 
     def placeHumanTile(self) -> None:
         self.switch.deactivate()
         self.buttons[self.numClicked].die()
 
         gridPoint = self.grid.gridPoint(self.startX, self.startY)
-        self.tiles1[self.numClicked].placeTile(gridPoint)
+        self.humanTiles[self.numClicked].placeTile(gridPoint)
         self.place.deactivate()
-        self.tiles1[self.numClicked].updateMark(2)
-        self.player1.updateLeft(self.tiles1[self.numClicked])
+        self.humanTiles[self.numClicked].updateMark(2)
+        self.player1.updateLeft(self.humanTiles[self.numClicked])
         for button in self.buttons:
             button.deactivate()
         self.startX += 1
@@ -86,7 +81,7 @@ class GamePlay:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
         self.root = GNode(rootTile, 0)
-        self.tree = GameTree(self.root, rootTile, [self.player1, self.player2])
+        self.tree = GameTree(self.root, [self.player1, self.player2])
         self.tree.populateTree()
         self.tree.setPayoffs()
         self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
@@ -101,7 +96,6 @@ class GamePlay:
 
         if node.isEmpty():
             WinButton(self.window, "1")
-            self.isOver = True
             return None
 
         pays = []
@@ -115,7 +109,6 @@ class GamePlay:
         self.player2.updateLeft(newNode.getTile())
 
         if node.getChildren()[index].isEmpty():
-            self.isOver = True
             WinButton(self.window, "2")
             return None
 
@@ -126,7 +119,7 @@ class GamePlay:
 
     def humanMove(self, pt: Point, node: GNode, depth: int) -> None:
         """gets clicks until player places tile correctly"""
-        while not self.quitB.isClicked(pt) or not self.isOver:
+        while not self.quitB.isClicked(pt):
             if self.quitB.isClicked(pt):
                 break
 
@@ -134,13 +127,13 @@ class GamePlay:
             self.checkTileButtons(pt)
 
             if self.switch.isClicked(pt):
-                self.tiles1[self.numClicked].switch()
+                self.humanTiles[self.numClicked].switch()
             elif self.place.isClicked(pt):
                 placedColor = node.getTile().getColor2()
-                if placedColor == self.tiles1[self.numClicked].getColor2():
-                    self.tiles1[self.numClicked].switch()
+                if placedColor == self.humanTiles[self.numClicked].getColor2():
+                    self.humanTiles[self.numClicked].switch()
 
-                if placedColor != self.tiles1[self.numClicked].getColor1():
+                if placedColor != self.humanTiles[self.numClicked].getColor1():
                     errorRect = InfoBox(
                         self.window,
                         Point(496, 225),
@@ -154,11 +147,10 @@ class GamePlay:
                 else:
                     self.placeHumanTile()
                     if depth == 8:
-                        self.isOver = True
                         WinButton(self.window, "1")
                     else:
                         for iNode in node.getChildren():
-                            if iNode.getTile() == self.tiles1[self.numClicked]:
+                            if iNode.getTile() == self.humanTiles[self.numClicked]:
                                 newNode = iNode
                                 break
                         node = self.computerMove(newNode)
