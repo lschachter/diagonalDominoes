@@ -3,7 +3,7 @@ from gameTree import GameTree
 from gNode import GNode
 from button import WinButton, InfoBox
 
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from grid import Grid
@@ -82,7 +82,7 @@ class GamePlay:
         self.startX += 1
         self.startY -= 1
 
-    def computerSetUp(self, rootTile: "Tile") -> Union[bool, GNode]:
+    def computerSetUp(self, rootTile: "Tile") -> Optional[GNode]:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
         self.root = GNode(rootTile, 0)
@@ -93,7 +93,7 @@ class GamePlay:
 
         return self.computerMove(self.root)
 
-    def computerMove(self, node: GNode) -> Union[bool, GNode]:
+    def computerMove(self, node: GNode) -> Optional[GNode]:
         """chooses the computer's next move based on payoff, then places it"""
         gridPoint = self.grid.gridPoint(self.startX, self.startY)
         self.startX += 1
@@ -102,7 +102,7 @@ class GamePlay:
         if node.isEmpty():
             WinButton(self.window, "1")
             self.isOver = True
-            return False
+            return None
 
         pays = []
         for child in node.getChildren():
@@ -117,7 +117,7 @@ class GamePlay:
         if node.getChildren()[index].isEmpty():
             self.isOver = True
             WinButton(self.window, "2")
-            return True
+            return None
 
         for button in self.buttons:
             button.activate()
