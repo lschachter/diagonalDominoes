@@ -52,7 +52,7 @@ class GamePlay:
 
             pt = self.window.getMouse()
 
-        self.humanMove(pt, start, start.getTile(), 2)
+        self.humanMove(pt, start, 2)
 
     def startUp(self, pt: Point):
         """Waits for the first tile to be picked by player1, then uses it to
@@ -119,33 +119,32 @@ class GamePlay:
             button.activate()
         return newNode
 
-    def computerMove(self, node: GNode, tile: "Tile"):
+    def computerMove(self, node: GNode):
         """chooses the computer's next move based on payoff, then places it"""
         g1 = self.grid.gridPoint(self.startX, self.startY)
         self.startX += 1
         self.startY -= 1
 
         if node.isEmpty():
-            return False, False
+            return False
 
         pays = []
         for child in node.getOutgoing():
             pays.append(child.getPayoff())
         index = pays.index(min(pays))
         newNode = node.getOutgoing()[index]
-        newTile = newNode.getTile()
-        if newTile.getColor1() != tile.getColor2():
-            newTile.switch()
-        newTile.placeTile(g1)
-        self.player2.updateLeft(newTile)
+        if newNode.getTile().getColor1() != node.getTile().getColor2():
+            newNode.getTile().switch()
+        newNode.getTile().placeTile(g1)
+        self.player2.updateLeft(newNode.getTile())
         if node.getOutgoing()[index].isEmpty():
-            return True, True
+            return True
 
         for button in self.buttons:
             button.activate()
-        return newTile, newNode
+        return newNode
 
-    def humanMove(self, pt: Point, node: GNode, tile: "Tile", depth: int):
+    def humanMove(self, pt: Point, node: GNode, depth: int) -> None:
         """gets clicks until player places tile correctly"""
         while not self.quitB.isClicked(pt) or not self.isOver:
             if self.quitB.isClicked(pt):
@@ -157,10 +156,11 @@ class GamePlay:
             if self.switch.isClicked(pt):
                 self.tiles1[self.numClicked].switch()
             elif self.place.isClicked(pt):
-                if tile.getColor2() == self.tiles1[self.numClicked].getColor2():
+                placedColor = node.getTile().getColor2()
+                if placedColor == self.tiles1[self.numClicked].getColor2():
                     self.tiles1[self.numClicked].switch()
 
-                if tile.getColor2() != self.tiles1[self.numClicked].getColor1():
+                if placedColor != self.tiles1[self.numClicked].getColor1():
                     errorRect = InfoBox(
                         self.window,
                         Point(496, 225),
