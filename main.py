@@ -16,9 +16,7 @@ def main() -> None:
     text = Text(Point(500, 120), "Diagonal Dominoes")
     text.draw(window)
     text.setSize(36)
-    gameB = Button(
-        window, Point(350, 300), 200, 150, "Play Game", color="black", textColor="white"
-    )
+    gameB = Button(window, Point(350, 300), 200, 150, "Play Game", inverse=True)
     gameB.setTextSize(24)
     instB = Button(
         window,
@@ -26,8 +24,7 @@ def main() -> None:
         200,
         150,
         "Instructions",
-        color="black",
-        textColor="white",
+        inverse=True,
     )
     instB.setTextSize(24)
     x = 100

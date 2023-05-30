@@ -13,16 +13,16 @@ class InfoBox:
         label: str,
         color: str = "white",
         textColor: str = "black",
-        size=None,
+        size: int = None,
     ) -> None:
         w, h = width / 2.0, height / 2.0
         x, y = center.getX(), center.getY()
         self.xmax, self.xmin = x + w, x - w
         self.ymax, self.ymin = y + h, y - h
-        self.color = color
-        self.lColor = textColor
         p1 = Point(self.xmin, self.ymin)
         p2 = Point(self.xmax, self.ymax)
+        self.color = color
+        self.lColor = textColor
         self.rect = Rectangle(p1, p2)
         self.rect.setFill(self.color)
         self.rect.draw(window)
@@ -54,6 +54,7 @@ class Button(InfoBox):
         label: str,
         color: str = "white",
         textColor: str = "black",
+        inverse: bool = False,
     ) -> None:
         """Creates a rectangular button, eg:
         qb = Button(myWin, centerPoint, width, height, "black", 'Quit')
@@ -64,9 +65,16 @@ class Button(InfoBox):
             width,
             height,
             label,
-            color,
-            textColor,
+            color=color,
+            textColor=textColor,
         )
+
+        if inverse:
+            # Shortcut to have black buttons with white labels
+            self.color = textColor
+            self.lColor = color
+            self.rect.setFill(self.color)
+            self.label.setFill(self.lColor)
 
         self.active = True
 

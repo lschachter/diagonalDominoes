@@ -53,8 +53,7 @@ class Grid:
             50,
             40,
             "Quit",
-            color="black",
-            textColor="white",
+            inverse=True,
         )
 
     def getWin(self) -> "GraphWin":
