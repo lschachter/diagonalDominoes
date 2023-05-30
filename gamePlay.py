@@ -20,7 +20,6 @@ class GamePlay:
         grid: "Grid",
         player1: "PlayerCollection",
         player2: "PlayerCollection",
-        quitB: "Button",
     ) -> None:
         """constructs the instance for game play"""
         self.window = window
@@ -29,7 +28,7 @@ class GamePlay:
         self.player2 = player2
         self.startX = 0
         self.startY = 8
-        self.quitB = quitB
+        self.quitB = self.grid.getQuitB()
         self.buttons = player1.getButtonSet()
         self.humanTiles = player1.getTiles()
         self.switch, self.place = player1.getMoveSet()

@@ -47,4 +47,4 @@ class GNode:
     def __str__(self) -> str:
         """allows the node to be printed out readably as the tile
         and all nodes it can reach"""
-        return "{" + self.tile.getName() + ": " + self.items + "}"
+        return f"[{self.tile.getName()}: {self.items}]"

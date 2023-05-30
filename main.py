@@ -67,7 +67,6 @@ def main() -> None:
     grid = Grid(window)
     window.setBackground("gray")
     grid.drawGrid()
-    quitB = grid.getQuitB()
 
     # sets up each player collection
     player1 = PlayerCollection(window, Point(120, 50), 1)
@@ -77,7 +76,7 @@ def main() -> None:
     player2.displayTiles()
 
     # starts the game
-    game = GamePlay(window, grid, player1, player2, quitB)
+    game = GamePlay(window, grid, player1, player2)
     game.playGame()
 
 
