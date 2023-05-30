@@ -61,7 +61,7 @@ class PlayerCollection:
 
     def humanSetup(self):
         """Creates the buttons needed for a human player"""
-        self.switchB = DrawButton(
+        self.switchB = Button(
             self.window,
             Point(self.x - 35, self.window.getHeight() - 100),
             12,
@@ -70,7 +70,7 @@ class PlayerCollection:
         )
         self.switchB.offSet(0, 25)
         self.switchB.deactivate()
-        self.placeB = DrawButton(
+        self.placeB = Button(
             self.window,
             Point(self.x + 35, self.window.getHeight() - 100),
             12,

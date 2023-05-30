@@ -1,7 +1,7 @@
 from graphics import Point
 from gameTree import GameTree
 from gNode import GNode
-from button import DrawWinButton, DrawInfoBox
+from button import WinButton, InfoBox
 
 from typing import TYPE_CHECKING
 
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from grid import Grid
     from playerCollection import PlayerCollection
     from graphics import GraphWin
-    from button import DrawButton
+    from button import Button
     from tile import Tile
 
 
@@ -20,7 +20,7 @@ class GamePlay:
         grid: "Grid",
         player1: "PlayerCollection",
         player2: "PlayerCollection",
-        quitB: "DrawButton",
+        quitB: "Button",
     ):
         """constructs the instance for game play"""
         self.window = window
@@ -96,7 +96,7 @@ class GamePlay:
         self.startY -= 1
 
         if self.root.isEmpty():
-            DrawWinButton(self.window, "1")
+            WinButton(self.window, "1")
             self.isOver = True
             return False
 
@@ -106,13 +106,15 @@ class GamePlay:
         index = pays.index(min(pays))
         newNode = self.root.getOutgoing()[index]
         tile = newNode.getTile()
+
         if tile.getColor1() != self.root.getTile().getColor2():
             tile.switch()
         tile.placeTile(g1)
         self.player2.updateLeft(tile)
+
         if newNode.isEmpty():
             self.isOver = True
-            DrawWinButton(self.window, "2")
+            WinButton(self.window, "2")
         for button in self.buttons:
             button.activate()
         return newNode
@@ -159,7 +161,7 @@ class GamePlay:
                     self.tiles1[self.numClicked].switch()
 
                 if tile.getColor2() != self.tiles1[self.numClicked].getColor1():
-                    errorRect = DrawInfoBox(
+                    errorRect = InfoBox(
                         self.window,
                         Point(496, 225),
                         500,
@@ -173,7 +175,7 @@ class GamePlay:
                     self.placeHumanTile()
                     if depth == 8:
                         self.isOver = True
-                        DrawWinButton(self.window, "1")
+                        WinButton(self.window, "1")
                     else:
                         for iNode in node.getOutgoing():
                             if iNode.getTile() == self.tiles1[self.numClicked]:
@@ -185,10 +187,10 @@ class GamePlay:
                         depth += 2
                         if tile == False:
                             self.isOver = True
-                            DrawWinButton(self.window, "1")
+                            WinButton(self.window, "1")
                         elif tile == True:
                             self.isOver = True
-                            DrawWinButton(self.window, "2")
+                            WinButton(self.window, "2")
 
             pt = self.window.getMouse()
         self.window.close()

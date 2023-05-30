@@ -1,7 +1,7 @@
 from graphics import Point, Rectangle, Text, GraphWin
 
 
-class DrawInfoBox:
+class InfoBox:
     """ """
 
     def __init__(
@@ -39,7 +39,7 @@ class DrawInfoBox:
         self.rect.undraw()
 
 
-class DrawButton(DrawInfoBox):
+class Button(InfoBox):
     """A button is a labeled rectangle in a window.
     It is enabled or disabled with the activate()
     and deactivate() methods. The isClicked(pt) method
@@ -113,7 +113,7 @@ class DrawButton(DrawInfoBox):
         super().delete()
 
 
-class DrawWinButton(DrawButton):
+class WinButton(Button):
     def __init__(self, window, playerName):
         """Winner button"""
         super().__init__(

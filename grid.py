@@ -1,5 +1,5 @@
 from graphics import Rectangle, Point
-from button import DrawButton
+from button import Button
 
 from typing import TYPE_CHECKING
 
@@ -47,7 +47,7 @@ class Grid:
                 row.append(square)
             self.grid.append(row)
 
-        self.quitB = DrawButton(
+        self.quitB = Button(
             self.window,
             Point(self.width / 2, self.height - 30),
             50,
