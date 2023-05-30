@@ -2,16 +2,16 @@ from random import randrange
 
 from graphics import Point, Text
 from tile import Tile
-from button import DrawButton
+from button import Button
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple, List
 
 if TYPE_CHECKING:
     from graphics import GraphWin
 
 
 class PlayerCollection:
-    def __init__(self, window: "GraphWin", top: Point, player: int):
+    def __init__(self, window: "GraphWin", top: Point, player: int) -> None:
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
@@ -50,7 +50,7 @@ class PlayerCollection:
         info.setSize(25)
         info.draw(self.window)
 
-    def displayTiles(self):
+    def displayTiles(self) -> None:
         """Displays the collection of tiles on the screen
         as well as the polygon to cover the tiles should
         the game go so long as to require the board to shift"""
@@ -59,7 +59,7 @@ class PlayerCollection:
             tile.drawTile(Point(self.x - 25, y), Point(self.x + 25, y))
             y += 80
 
-    def humanSetup(self):
+    def humanSetup(self) -> None:
         """Creates the buttons needed for a human player"""
         self.switchB = Button(
             self.window,
@@ -81,31 +81,31 @@ class PlayerCollection:
         self.placeB.deactivate()
         y = self.top.getY() + 85
         for _ in self.tiles:
-            button = DrawButton(self.window, Point(self.x, y), 10, 8, "Choose")
+            button = Button(self.window, Point(self.x, y), 10, 8, "Choose")
             button.offSet(0, 10)
             button.activate()
             self.choiceButtons.append(button)
             y += 80
 
-    def getTiles(self):
+    def getTiles(self) -> List[Tile]:
         """returns the set of tiles"""
         return self.tiles
 
-    def getButtonSet(self):
+    def getButtonSet(self) -> List[Button]:
         """returns the set of buttons used to choose the next tile"""
         return self.choiceButtons
 
-    def getMoveSet(self):
+    def getMoveSet(self) -> Tuple[Button, Button]:
         """returns the switch and placement tiles"""
         return self.switchB, self.placeB
 
-    def getLeft(self):
+    def getLeft(self) -> List[Tile]:
         """returns the tiles left in the player's hand"""
         return self.left
 
-    def updateLeft(self, tile: Tile):
+    def updateLeft(self, tile: Tile) -> None:
         """updates the tiles left in the player's hand"""
         self.left.remove(tile)
 
-    def getPlayerNum(self):
+    def getPlayerNum(self) -> int:
         return self.playerNum

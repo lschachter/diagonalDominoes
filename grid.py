@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class Grid:
-    def __init__(self, window: "GraphWin"):
+    def __init__(self, window: "GraphWin") -> None:
         """Constructs the game grid"""
         self.width = window.getWidth()
         self.height = window.getHeight()
@@ -18,7 +18,7 @@ class Grid:
         self.squareWidth = 50
         self.squareHeight = 50
 
-    def drawGrid(self):
+    def drawGrid(self) -> None:
         """Draws the grid"""
         rect = Rectangle(Point(0, 0), Point(1000, 600))
         rect.draw(self.window)
@@ -57,18 +57,18 @@ class Grid:
             textColor="white",
         )
 
-    def getWin(self):
+    def getWin(self) -> "GraphWin":
         """returns the graphical window"""
         return self.window
 
-    def getQuitB(self):
+    def getQuitB(self) -> Button:
         """returns the quit Button"""
         return self.quitB
 
-    def gridPoint(self, x: int, y: int):
+    def gridPoint(self, x: int, y: int) -> Point:
         """returns the centerpoint of a given grid square"""
         return self.grid[x][y].getCenter()
 
-    def closeGrid(self):
+    def closeGrid(self) -> None:
         """closes the grid"""
         self.window.close()

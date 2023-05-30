@@ -3,7 +3,7 @@ from gameTree import GameTree
 from gNode import GNode
 from button import WinButton, InfoBox
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, Union
 
 if TYPE_CHECKING:
     from grid import Grid
@@ -21,7 +21,7 @@ class GamePlay:
         player1: "PlayerCollection",
         player2: "PlayerCollection",
         quitB: "Button",
-    ):
+    ) -> None:
         """constructs the instance for game play"""
         self.window = window
         self.grid = grid
@@ -37,24 +37,24 @@ class GamePlay:
         self.numClicked = 0
         self.isOver = False
 
-    def playGame(self):
+    def playGame(self) -> None:
         """begins the game"""
         pt = self.window.getMouse()
-        start = False
-        while start == False or not self.quitB.isClicked(pt):
-            if self.quitB.isClicked(pt):
-                self.window.close()
-                break
+        startingNode = None
 
-            start = self.startUp(pt)
-            if start != False:
+        while not self.quitB.isClicked(pt):
+            startingNode = self.startUp(pt)
+            if startingNode:
                 break
 
             pt = self.window.getMouse()
 
-        self.humanMove(pt, start, 2)
+        if startingNode:
+            self.humanMove(pt, startingNode, 2)
+        else:
+            self.window.close()
 
-    def startUp(self, pt: Point):
+    def startUp(self, pt: Point) -> Optional[GNode]:
         """Waits for the first tile to be picked by player1, then uses it to
         call to populate the tree"""
         self.checkTileButtons(pt)
@@ -65,10 +65,10 @@ class GamePlay:
             self.placeHumanTile()
             return self.computerSetUp(self.tiles1[self.numClicked])
 
-        # returns false so that the while loop gets another click
-        return False
+        # returns None so that the while loop gets another click
+        return None
 
-    def placeHumanTile(self):
+    def placeHumanTile(self) -> None:
         self.switch.deactivate()
         self.buttons[self.numClicked].die()
 
@@ -181,21 +181,19 @@ class GamePlay:
                             if iNode.getTile() == self.tiles1[self.numClicked]:
                                 newNode = iNode
                                 break
-                        tile, node = self.computerMove(
-                            newNode, self.tiles1[self.numClicked]
-                        )
+                        node = self.computerMove(newNode)
                         depth += 2
-                        if tile == False:
+                        if node == False:
                             self.isOver = True
                             WinButton(self.window, "1")
-                        elif tile == True:
+                        elif node == True:
                             self.isOver = True
                             WinButton(self.window, "2")
 
             pt = self.window.getMouse()
         self.window.close()
 
-    def checkTileButtons(self, pt):
+    def checkTileButtons(self, pt: Point) -> None:
         for button in self.buttons:
             if button.isClicked(pt):
                 self.buttons[self.numClicked].unchoose()

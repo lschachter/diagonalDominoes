@@ -14,28 +14,22 @@ class GameTree:
 
     def __init__(
         self, root: GNode, rootTile: "Tile", players: List["PlayerCollection"]
-    ):
+    ) -> None:
         """constructs the tree with the given root tile"""
         self.rootTile = rootTile
         self.root = root
-        self.tree = defaultdict(list)
-        self.tree[0].append(self.root)
+        self.tree = defaultdict(set)
+        self.tree[0].add(self.root)
         self.players = players
 
-    def getRoot(self):
-        """returns the root"""
-        return self.root
-
-    def getStruct(self):
-        """returns actual dictionary"""
-        return self.tree
-
-    def populateTree(self):
+    def populateTree(self) -> None:
         """gives the player tile collections and relevant info to the recursive
         function 'nextMove' to populate the tree"""
         self.nextMove(self.players[1], 1, self.root, self.rootTile.getColor2())
 
-    def nextMove(self, player, depth, node, prevCol):
+    def nextMove(
+        self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
+    ) -> None:
         """a recursive function that finds each possible next move"""
         for tile in player.getLeft():
             if prevCol == tile.getColor2():
@@ -58,11 +52,11 @@ class GameTree:
                     else:
                         newNode.updatePayoff(-1)
 
-    def getTile(self, node: GNode):
+    def getTile(self, node: GNode) -> "Tile":
         """returns the tile associated with the node"""
         return node.getTile()
 
-    def payoffAt(self, node: GNode):
+    def payoffAt(self, node: GNode) -> int:
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
@@ -89,7 +83,7 @@ class GameTree:
         else:
             return -pay
 
-    def setPayoffs(self):
+    def setPayoffs(self) -> None:
         """sets the payoffs for all nodes"""
         tuples = list(self.tree.items())
         tuples.sort(reverse=True)
@@ -97,7 +91,7 @@ class GameTree:
             for node in layer[1]:
                 node.updatePayoff(self.payoffAt(node))
 
-    def printTree(self):
+    def printTree(self) -> None:
         """prints the tree by depth"""
         for level in list(self.tree.items()):
             print(level[0])

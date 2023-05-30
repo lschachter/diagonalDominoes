@@ -14,7 +14,7 @@ class InfoBox:
         color: str = "white",
         textColor: str = "black",
         size=None,
-    ):
+    ) -> None:
         w, h = width / 2.0, height / 2.0
         x, y = center.getX(), center.getY()
         self.xmax, self.xmin = x + w, x - w
@@ -34,7 +34,7 @@ class InfoBox:
         if size:
             self.label.setSize(size)
 
-    def delete(self):
+    def delete(self) -> None:
         self.label.undraw()
         self.rect.undraw()
 
@@ -54,7 +54,7 @@ class Button(InfoBox):
         label: str,
         color: str = "white",
         textColor: str = "black",
-    ):
+    ) -> None:
         """Creates a rectangular button, eg:
         qb = Button(myWin, centerPoint, width, height, "black", 'Quit')
         """
@@ -70,7 +70,7 @@ class Button(InfoBox):
 
         self.active = True
 
-    def isClicked(self, pt):
+    def isClicked(self, pt: Point) -> bool:
         "Returns true if button active and pt is inside"
         return (
             self.active
@@ -78,43 +78,43 @@ class Button(InfoBox):
             and self.ymin <= pt.getY() <= self.ymax
         )
 
-    def activate(self):
+    def activate(self) -> None:
         "Sets this button to 'active'."
         self.rect.setOutline("black")
         self.active = True
 
-    def choose(self):
+    def choose(self) -> None:
         """Alters the look of the button to show it's been selected"""
         self.rect.setFill("DarkGray")
         self.rect.setWidth(2)
 
-    def unchoose(self):
+    def unchoose(self) -> None:
         """Resets the look of the button once another has been chosen"""
         self.label.setFill(self.lColor)
         self.rect.setFill(self.color)
         self.rect.setWidth(1)
 
-    def deactivate(self):
+    def deactivate(self) -> None:
         "Sets this button to 'inactive'."
         self.rect.setOutline(self.color)
         self.active = False
 
-    def setTextSize(self, size):
+    def setTextSize(self, size: int) -> None:
         """Sets the size and face of the label"""
         self.label.setSize(size)
 
-    def offSet(self, x, y):
+    def offSet(self, x: int, y: int) -> None:
         """Offsets the label from the button"""
         self.label.move(x, y)
 
-    def die(self):
+    def die(self) -> None:
         """Effectively deletes the button"""
         self.active = False
         super().delete()
 
 
 class WinButton(Button):
-    def __init__(self, window, playerName):
+    def __init__(self, window: "GraphWin", playerName: str) -> None:
         """Winner button"""
         super().__init__(
             window,

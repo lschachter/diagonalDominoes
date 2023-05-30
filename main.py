@@ -8,7 +8,7 @@ from gamePlay import GamePlay
 from tile import Tile
 
 
-def main():
+def main() -> None:
     # creates the splash screen
     window = GraphWin("Diagonal Dominoes", 1000, 600)
     window.setCoords(0, 600, 1000, 0)
@@ -84,4 +84,5 @@ def main():
     game.playGame()
 
 
-main()
+if __name__ == "__main__":
+    main()
