@@ -11,7 +11,7 @@ class GNode:
     def __init__(self, tile: "Tile", depth: int):
         """constructs the node"""
         self.tile = tile
-        self.outgoing = []
+        self.children = []
         self.depth = depth
         self.payOff = 0
         self.items = ""
@@ -33,15 +33,15 @@ class GNode:
 
     def isEmpty(self) -> bool:
         """returns true if leaf, false if not"""
-        return len(self.outgoing) == 0
+        return len(self.children) == 0
 
-    def getOutgoing(self) -> List["GNode"]:
-        return self.outgoing
+    def getChildren(self) -> List["GNode"]:
+        return self.children
 
-    def addOutgoing(self, gNode: "GNode") -> None:
+    def addChild(self, gNode: "GNode") -> None:
         """adds a node to the list of nodes reachable by this one,
         and adds the name of that node's tile to a string"""
-        self.outgoing.append(gNode)
+        self.children.append(gNode)
         self.items += gNode.getTile().getName() + " "
 
     def __str__(self) -> str:

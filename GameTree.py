@@ -37,7 +37,7 @@ class GameTree:
             if prevCol == tile.getColor1() and tile.getMark() == 0:
                 tile.updateMark(1)
                 newNode = GNode(tile, depth)
-                node.addOutgoing(newNode)
+                node.addChild(newNode)
                 self.tree[node.getDepth()].add(node)
                 self.nextMove(
                     self.players[player.getPlayerNum() % 2],
@@ -63,7 +63,7 @@ class GameTree:
             return node.getPayoff()
 
         childPays = []
-        for child in node.getOutgoing():
+        for child in node.getChildren():
             childPays.append(child.getPayoff())
         if node.getDepth() % 2 == 0:  # then these are your choices
             return min(childPays)

@@ -82,66 +82,46 @@ class GamePlay:
         self.startX += 1
         self.startY -= 1
 
-    def computerSetUp(self, rootTile: "Tile"):
+    def computerSetUp(self, rootTile: "Tile") -> Union[bool, GNode]:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
         self.root = GNode(rootTile, 0)
         self.tree = GameTree(self.root, rootTile, [self.player1, self.player2])
         self.tree.populateTree()
         self.tree.setPayoffs()
-        # self.tree.printTree() # UNCOMMENT LINE TO SEE TREE PRINT
+        self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
 
-        g1 = self.grid.gridPoint(self.startX, self.startY)
+        return self.computerMove(self.root)
+
+    def computerMove(self, node: GNode) -> Union[bool, GNode]:
+        """chooses the computer's next move based on payoff, then places it"""
+        gridPoint = self.grid.gridPoint(self.startX, self.startY)
         self.startX += 1
         self.startY -= 1
 
-        if self.root.isEmpty():
+        if node.isEmpty():
             WinButton(self.window, "1")
             self.isOver = True
             return False
 
         pays = []
-        for node in self.root.getOutgoing():
-            pays.append(node.getPayoff())
-        index = pays.index(min(pays))
-        newNode = self.root.getOutgoing()[index]
-        tile = newNode.getTile()
-
-        if tile.getColor1() != self.root.getTile().getColor2():
-            tile.switch()
-        tile.placeTile(g1)
-        self.player2.updateLeft(tile)
-
-        if newNode.isEmpty():
-            self.isOver = True
-            WinButton(self.window, "2")
-        for button in self.buttons:
-            button.activate()
-        return newNode
-
-    def computerMove(self, node: GNode):
-        """chooses the computer's next move based on payoff, then places it"""
-        g1 = self.grid.gridPoint(self.startX, self.startY)
-        self.startX += 1
-        self.startY -= 1
-
-        if node.isEmpty():
-            return False
-
-        pays = []
-        for child in node.getOutgoing():
+        for child in node.getChildren():
             pays.append(child.getPayoff())
         index = pays.index(min(pays))
-        newNode = node.getOutgoing()[index]
+        newNode = node.getChildren()[index]
         if newNode.getTile().getColor1() != node.getTile().getColor2():
             newNode.getTile().switch()
-        newNode.getTile().placeTile(g1)
+        newNode.getTile().placeTile(gridPoint)
         self.player2.updateLeft(newNode.getTile())
-        if node.getOutgoing()[index].isEmpty():
+
+        if node.getChildren()[index].isEmpty():
+            self.isOver = True
+            WinButton(self.window, "2")
             return True
 
         for button in self.buttons:
             button.activate()
+
         return newNode
 
     def humanMove(self, pt: Point, node: GNode, depth: int) -> None:
