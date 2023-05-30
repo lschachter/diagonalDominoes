@@ -157,18 +157,12 @@ class GamePlay:
                         self.isOver = True
                         WinButton(self.window, "1")
                     else:
-                        for iNode in node.getOutgoing():
+                        for iNode in node.getChildren():
                             if iNode.getTile() == self.tiles1[self.numClicked]:
                                 newNode = iNode
                                 break
                         node = self.computerMove(newNode)
                         depth += 2
-                        if node == False:
-                            self.isOver = True
-                            WinButton(self.window, "1")
-                        elif node == True:
-                            self.isOver = True
-                            WinButton(self.window, "2")
 
             pt = self.window.getMouse()
         self.window.close()
