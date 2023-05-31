@@ -59,15 +59,8 @@ class PlayerCollection:
 
     def humanSetup(self) -> None:
         """Creates the buttons needed for a human player"""
-        pt = Point(self.top.getX() - 35, self.window.getHeight() - 100)
-        self.switchB = Button(self.window, pt, 12, 10, "Switch Tile \nOrientation")
-        self.switchB.offSet(0, 25)
-        self.switchB.deactivate()
-
-        pt = Point(self.top.getX() + 35, self.window.getHeight() - 100)
-        self.placeB = Button(self.window, pt, 12, 10, "Place Tile")
-        self.placeB.offSet(0, 25)
-        self.placeB.deactivate()
+        self.switchB = self.setUpButton("Switch Tile \nOrientation", -1)
+        self.placeB = self.setUpButton("Place Tile", 1)
 
         y = self.top.getY() + 85
         for _ in self.tiles:
@@ -76,6 +69,13 @@ class PlayerCollection:
             button.activate()
             self.choiceButtons.append(button)
             y += 80
+
+    def setUpButton(self, label: str, shift: int) -> Button:
+        pt = Point(self.top.getX() + (35 * shift), self.window.getHeight() - 100)
+        button = Button(self.window, pt, 12, 10, label)
+        button.offSet(0, 25)
+        button.deactivate()
+        return button
 
     def getTiles(self) -> List[Tile]:
         """returns the set of tiles"""

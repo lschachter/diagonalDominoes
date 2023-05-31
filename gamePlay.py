@@ -83,7 +83,7 @@ class GamePlay:
         self.tree = GameTree(self.root, [self.player1, self.player2])
         self.tree.populateTree()
         self.tree.setPayoffs()
-        self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
+        # self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
 
         return self.computerMove(self.root)
 
