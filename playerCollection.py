@@ -37,14 +37,12 @@ class PlayerCollection:
         for _ in range(5):
             index = randrange(len(cs))
             col1, col2 = cs[index][0], cs[index][1]
-            c1 = color[col1]
-            c2 = color[col2]
             cs.remove(cs[index])
-            tile = Tile(c1, c2, self.window)
+            tile = Tile(color[col1], color[col2], self.window)
             self.tiles.append(tile)
             self.left.append(tile)
 
-        info = Text(self.top, "Player " + str(self.playerNum) + " Collection")
+        info = Text(self.top, f"Player {str(self.playerNum)} Collection")
         info.setSize(25)
         info.draw(self.window)
 
@@ -61,24 +59,16 @@ class PlayerCollection:
 
     def humanSetup(self) -> None:
         """Creates the buttons needed for a human player"""
-        self.switchB = Button(
-            self.window,
-            Point(self.top.getX() - 35, self.window.getHeight() - 100),
-            12,
-            10,
-            "Switch Tile \nOrientation",
-        )
+        pt = Point(self.top.getX() - 35, self.window.getHeight() - 100)
+        self.switchB = Button(self.window, pt, 12, 10, "Switch Tile \nOrientation")
         self.switchB.offSet(0, 25)
         self.switchB.deactivate()
-        self.placeB = Button(
-            self.window,
-            Point(self.top.getX() + 35, self.window.getHeight() - 100),
-            12,
-            10,
-            "Place Tile",
-        )
+
+        pt = Point(self.top.getX() + 35, self.window.getHeight() - 100)
+        self.placeB = Button(self.window, pt, 12, 10, "Place Tile")
         self.placeB.offSet(0, 25)
         self.placeB.deactivate()
+
         y = self.top.getY() + 85
         for _ in self.tiles:
             button = Button(self.window, Point(self.top.getX(), y), 10, 8, "Choose")
