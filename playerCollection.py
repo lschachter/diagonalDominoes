@@ -19,7 +19,6 @@ class PlayerCollection:
         self.playerNum = playerNum
         self.tiles = []
         self.choiceButtons = []
-        self.squareWidth = self.squareHeight = 50
         self.left = []
         color = ["green", "blue", "red", "yellow"]
         cs = [

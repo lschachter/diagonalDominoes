@@ -9,7 +9,6 @@ if TYPE_CHECKING:
     from grid import Grid
     from playerCollection import PlayerCollection
     from graphics import GraphWin
-    from button import Button
     from tile import Tile
 
 
