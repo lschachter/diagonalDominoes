@@ -15,8 +15,7 @@ class Grid:
         self.window = window
         self.window.setCoords(0, 600, 1000, 0)
         self.grid = []
-        self.squareWidth = 50
-        self.squareHeight = 50
+        self.squareWidth = self.squareHeight = 50
 
     def drawGrid(self) -> None:
         """Draws the grid"""
@@ -27,20 +26,7 @@ class Grid:
         for x in range(1, 11):
             row = []
             for y in range(1, 10):
-                square = Rectangle(
-                    Point(
-                        (x * self.squareWidth - self.squareWidth * 0.5)
-                        + 0.22 * self.width,
-                        (y * self.squareHeight - self.squareHeight * 0.5)
-                        + self.height * 0.05,
-                    ),
-                    Point(
-                        (x * self.squareWidth + self.squareWidth * 0.5)
-                        + 0.22 * self.width,
-                        (y * self.squareHeight + self.squareHeight * 0.5)
-                        + self.height * 0.05,
-                    ),
-                )
+                square = self.buildSquare(x, y, self.squareWidth, self.squareHeight)
                 square.draw(self.window)
                 square.setFill("black")
                 square.setOutline("white")
@@ -54,6 +40,14 @@ class Grid:
             40,
             "Quit",
             inverse=True,
+        )
+
+    def buildSquare(self, x: int, y: int, width: int, height: int) -> Rectangle:
+        offsetW, offsetH = 0.22 * self.width, 0.05 * self.height
+        halfW, halfH = width * 0.5, height * 0.5
+        return Rectangle(
+            Point((x * width - halfW) + offsetW, (y * height - halfH) + offsetH),
+            Point((x * width + halfW) + offsetW, (y * height + halfH) + offsetH),
         )
 
     def getWin(self) -> "GraphWin":
