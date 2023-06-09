@@ -1,6 +1,6 @@
 from graphics import Point, Rectangle
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
     from graphics import GraphWin
@@ -101,3 +101,6 @@ class Tile:
     def getColor2(self) -> str:
         """returns the right color of the tile"""
         return self.colors[1]
+
+    def getColors(self) -> List[str]:
+        return self.colors
