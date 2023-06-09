@@ -29,8 +29,8 @@ class GameTree:
     ) -> None:
         """a recursive function that finds each possible next move"""
         for tile in player.getLeft():
-            tile_colors = tile.getColors()
-            if prevCol not in tile_colors or tile.getMark() != 0:
+            colors = tile.getColors()
+            if prevCol not in colors or tile.getMark() != 0:
                 # Ignore tiles that don't match the color or that have been used
                 continue
 
@@ -38,23 +38,18 @@ class GameTree:
             newNode = GNode(tile, depth)
             node.addChild(newNode)
             self.tree[node.getDepth()].add(node)
-            color = tile_colors[0] if tile_colors[0] != prevCol else tile_colors[1]
-            self.nextMove(
-                self.players[player.getPlayerNum() % 2],
-                depth + 1,
-                newNode,
-                color,
-            )
+
+            newColor = colors[0] if colors[0] != prevCol else colors[1]
+            newPlayerId = player.getPlayerNum() % 2
+            self.nextMove(self.players[newPlayerId], depth + 1, newNode, newColor)
+
             tile.updateMark(0)
             if newNode.isEmpty():
+                # If it's a leaf node, set the payoff as user win (1) or loss (-1)
                 if newNode.getDepth() == 9 or newNode.getDepth() % 2 == 0:
                     newNode.updatePayoff(1)
                 else:
                     newNode.updatePayoff(-1)
-
-    def getTile(self, node: GNode) -> "Tile":
-        """returns the tile associated with the node"""
-        return node.getTile()
 
     def payoffAt(self, node: GNode) -> int:
         """calculates payoffs based on how likely the human is to win
