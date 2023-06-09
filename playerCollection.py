@@ -11,12 +11,12 @@ if TYPE_CHECKING:
 
 
 class PlayerCollection:
-    def __init__(self, window: "GraphWin", top: Point, playerNum: int) -> None:
+    def __init__(self, window: "GraphWin", top: Point, playerId: int) -> None:
         """Constructs a player's collection of tiles
         and prints their information on the screen"""
         self.window = window
         self.top = top
-        self.playerNum = playerNum
+        self.playerId = playerId
         self.tiles = []
         self.choiceButtons = []
         self.left = []
@@ -41,7 +41,7 @@ class PlayerCollection:
             self.tiles.append(tile)
             self.left.append(tile)
 
-        info = Text(self.top, f"Player {str(self.playerNum)} Collection")
+        info = Text(self.top, f"Player {str(self.playerId)} Collection")
         info.setSize(25)
         info.draw(self.window)
 
@@ -96,5 +96,5 @@ class PlayerCollection:
         """updates the tiles left in the player's hand"""
         self.left.remove(tile)
 
-    def getPlayerNum(self) -> int:
-        return self.playerNum
+    def getPlayerId(self) -> int:
+        return self.playerId

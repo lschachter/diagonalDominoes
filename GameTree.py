@@ -40,7 +40,7 @@ class GameTree:
             self.tree[node.getDepth()].add(node)
 
             newColor = colors[0] if colors[0] != prevCol else colors[1]
-            newPlayerId = player.getPlayerNum() % 2
+            newPlayerId = player.getPlayerId() % 2
             self.nextMove(self.players[newPlayerId], depth + 1, newNode, newColor)
 
             tile.updateMark(0)
