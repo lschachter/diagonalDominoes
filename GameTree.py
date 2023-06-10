@@ -4,7 +4,6 @@ from gNode import GNode
 from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
-    from tile import Tile
     from playerCollection import PlayerCollection
 
 

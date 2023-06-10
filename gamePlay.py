@@ -165,3 +165,4 @@ class GamePlay:
                 self.switch.activate()
                 self.place.activate()
                 self.numClicked = self.buttons.index(button)
+                return
