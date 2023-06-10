@@ -127,35 +127,34 @@ class GamePlay:
             if self.switch.isClicked(pt):
                 self.humanTiles[self.numClicked].switch()
             elif self.place.isClicked(pt):
-                placedColor = node.getTile().getColor2()
-                if placedColor == self.humanTiles[self.numClicked].getColor2():
-                    self.humanTiles[self.numClicked].switch()
-
-                if placedColor != self.humanTiles[self.numClicked].getColor1():
-                    errorRect = InfoBox(
-                        self.window,
-                        Point(496, 225),
-                        500,
-                        250,
-                        "That move is invalid.\nChoose a tile whose left color corresponds\nto the rightmost tile-color on the board.",
-                        size=26,
-                    )
-                    self.window.getMouse()
-                    errorRect.delete()
-                else:
-                    self.placeHumanTile()
-                    if depth == 8:
-                        WinButton(self.window, "1")
-                    else:
-                        for iNode in node.getChildren():
-                            if iNode.getTile() == self.humanTiles[self.numClicked]:
-                                newNode = iNode
-                                break
-                        node = self.computerMove(newNode)
-                        depth += 2
+                node = self.processPlaceTileClick(node, depth)
+                depth += 2
 
             pt = self.window.getMouse()
         self.window.close()
+
+    def processPlaceTileClick(self, node: GNode, depth: int) -> GNode:
+        placedColor = node.getTile().getColor2()
+        if placedColor != self.humanTiles[self.numClicked].getColor1():
+            self.humanTiles[self.numClicked].switch()
+
+        if placedColor != self.humanTiles[self.numClicked].getColor1():
+            msg = "That move is invalid.\nChoose a tile whose left color corresponds\nto the rightmost tile-color on the board."
+            errorRect = InfoBox(self.window, Point(496, 225), 500, 250, msg, size=26)
+            self.window.getMouse()
+            errorRect.delete()
+        else:
+            self.placeHumanTile()
+            if depth == 8:
+                WinButton(self.window, "1")
+            else:
+                for iNode in node.getChildren():
+                    if iNode.getTile() == self.humanTiles[self.numClicked]:
+                        newNode = iNode
+                        break
+                node = self.computerMove(newNode)
+
+        return node
 
     def checkTileButtons(self, pt: Point) -> None:
         for button in self.buttons:
