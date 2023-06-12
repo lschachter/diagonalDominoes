@@ -3,7 +3,6 @@ from random import randrange
 from graphics import GraphWin, Text, Point, color_rgb
 from grid import Grid
 from button import Button, InfoBox
-from playerCollection import PlayerCollection
 from gamePlay import GamePlay
 from tile import Tile
 
@@ -68,15 +67,8 @@ def main() -> None:
     window.setBackground("gray")
     grid.drawGrid()
 
-    # sets up each player collection
-    player1 = PlayerCollection(window, Point(120, 50), 1)
-    player2 = PlayerCollection(window, Point(880, 50), 2)
-    player1.displayTiles()
-    player1.humanSetup()
-    player2.displayTiles()
-
     # starts the game
-    game = GamePlay(window, grid, player1, player2)
+    game = GamePlay(window, grid)
     game.playGame()
 
 

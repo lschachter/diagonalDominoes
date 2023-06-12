@@ -2,12 +2,12 @@ from graphics import Point
 from gameTree import GameTree
 from gNode import GNode
 from button import WinButton, InfoBox
+from playerCollection import PlayerCollection
 
 from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from grid import Grid
-    from playerCollection import PlayerCollection
     from graphics import GraphWin
     from tile import Tile
 
@@ -17,20 +17,29 @@ class GamePlay:
         self,
         window: "GraphWin",
         grid: "Grid",
-        player1: "PlayerCollection",
-        player2: "PlayerCollection",
     ) -> None:
         """constructs the instance for game play"""
         self.window = window
         self.grid = grid
-        self.player1 = player1
-        self.player2 = player2
+        self.quitB = self.grid.getQuitB()
+        self.winButton = None
+        self.buildPlayerCollections()
+
+    def buildPlayerCollections(self) -> None:
+        # sets up each player collection
+        self.player1 = PlayerCollection(self.window, Point(120, 50), 1)
+        self.player2 = PlayerCollection(self.window, Point(880, 50), 2)
+        self.player1.displayTiles()
+        self.player1.humanSetup()
+        self.player2.displayTiles()
+
+        self.buttons = self.player1.getButtonSet()
+        self.humanTiles = self.player1.getTiles()
+        self.switch, self.place = self.player1.getMoveSet()
+
         self.startX = 0
         self.startY = 8
-        self.quitB = self.grid.getQuitB()
-        self.buttons = player1.getButtonSet()
-        self.humanTiles = player1.getTiles()
-        self.switch, self.place = player1.getMoveSet()
+
         self.numClicked = 0
 
     def playGame(self) -> None:
@@ -93,7 +102,7 @@ class GamePlay:
         self.startY -= 1
 
         if node.isEmpty():
-            WinButton(self.window, "1")
+            self.winButton = WinButton(self.window, "1")
             return None
 
         pays = []
@@ -107,7 +116,7 @@ class GamePlay:
         self.player2.updateLeft(newNode.getTile())
 
         if node.getChildren()[index].isEmpty():
-            WinButton(self.window, "2")
+            self.winButton = WinButton(self.window, "2")
             return None
 
         for button in self.buttons:
@@ -118,6 +127,9 @@ class GamePlay:
     def humanMove(self, pt: Point, node: GNode, depth: int) -> None:
         """gets clicks until player places tile correctly"""
         while not self.quitB.isClicked(pt):
+            if self.winButton and self.winButton.isClicked(pt):
+                self.restartGame()
+
             if self.quitB.isClicked(pt):
                 break
 
@@ -146,7 +158,7 @@ class GamePlay:
         else:
             self.placeHumanTile()
             if depth == 8:
-                WinButton(self.window, "1")
+                self.winButton = WinButton(self.window, "1")
             else:
                 for iNode in node.getChildren():
                     if iNode.getTile() == self.humanTiles[self.numClicked]:
@@ -165,3 +177,18 @@ class GamePlay:
                 self.place.activate()
                 self.numClicked = self.buttons.index(button)
                 return
+
+    def restartGame(self) -> None:
+        self.clearGame()
+        self.buildPlayerCollections()
+        self.playGame()
+
+    def clearGame(self) -> None:
+        for player in [self.player1, self.player2]:
+            for tile in player.getTiles():
+                tile.undraw()
+
+        for button in self.buttons:
+            button.die()
+
+        self.winButton.die()

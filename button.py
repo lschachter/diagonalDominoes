@@ -129,5 +129,5 @@ class WinButton(Button):
             Point(window.getWidth() / 2, window.getHeight() / 2),
             200,
             100,
-            f"Player {playerName} wins!",
+            f"Player {playerName} wins!\nPlay again?",
         )
