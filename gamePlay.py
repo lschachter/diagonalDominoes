@@ -105,9 +105,7 @@ class GamePlay:
             self.winButton = WinButton(self.window, "1")
             return None
 
-        pays = []
-        for child in node.getChildren():
-            pays.append(child.getPayoff())
+        pays = [child.getPayoff() for child in node.getChildren()]
         index = pays.index(min(pays))
         newNode = node.getChildren()[index]
         if newNode.getTile().getColor1() != node.getTile().getColor2():

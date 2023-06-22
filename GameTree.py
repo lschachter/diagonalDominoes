@@ -50,15 +50,40 @@ class GameTree:
                 else:
                     newNode.updatePayoff(-1)
 
+    def nextMove2(
+        self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
+    ) -> None:
+        """a recursive function that finds each possible next move"""
+        for tile in player.getLeft():
+            colors = tile.getColors()
+            if prevCol not in colors or tile.getMark() != 0:
+                # Ignore tiles that don't match the color or that have been used
+                continue
+
+            tile.updateMark(1)
+            newNode = GNode(tile, depth)
+            node.addChild(newNode)
+            self.tree[node.getDepth()].add(node)
+
+            newColor = colors[0] if colors[0] != prevCol else colors[1]
+            newPlayerId = player.getPlayerId() % 2
+            self.nextMove(self.players[newPlayerId], depth + 1, newNode, newColor)
+
+            tile.updateMark(0)
+            if newNode.isEmpty():
+                # If it's a leaf node, set the payoff as user win (1) or loss (-1)
+                if newNode.getDepth() == 9 or newNode.getDepth() % 2 == 0:
+                    newNode.updatePayoff(1)
+                else:
+                    newNode.updatePayoff(-1)
+
     def payoffAt(self, node: GNode) -> int:
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
             return node.getPayoff()
 
-        childPays = []
-        for child in node.getChildren():
-            childPays.append(child.getPayoff())
+        childPays = [child.getPayoff() for child in node.getChildren()]
         if node.getDepth() % 2 == 0:  # then these are your choices
             return min(childPays)
 
