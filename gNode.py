@@ -46,4 +46,4 @@ class GNode:
         """allows the node to be printed out readably as the tile
         and all nodes it can reach"""
         children = ", ".join([node.getTile().getName() for node in self.children])
-        return f"[{self.tile.getName()}: {children}]"
+        return f"[{self.depth} {self.tile.getName()}: {children}]"

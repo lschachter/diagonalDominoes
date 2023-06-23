@@ -1,4 +1,3 @@
-from collections import defaultdict
 from gNode import GNode
 
 from typing import TYPE_CHECKING, List
@@ -14,7 +13,6 @@ class GameTree:
     def __init__(self, root: GNode, players: List["PlayerCollection"]) -> None:
         """constructs the tree with the given root tile"""
         self.root = root
-        self.tree = defaultdict(set)
         self.players = players
 
     def populateTree(self) -> None:
@@ -26,8 +24,6 @@ class GameTree:
         self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
     ) -> None:
         """a recursive function that finds each possible next move"""
-        self.tree[node.getDepth()].add(node)
-
         for tile in player.getLeft():
             colors = tile.getColors()
             if prevCol not in colors or tile.getMark() != 0:
@@ -67,8 +63,11 @@ class GameTree:
 
     def printTree(self) -> None:
         """prints the tree by depth"""
-        for level, nodes in list(self.tree.items()):
-            print(level)
-            for node in nodes:
-                print(node)
-                print("payoff: ", node.getPayoff())
+        queue = [self.root]
+
+        while queue:
+            node = queue.pop(0)
+            print(node)
+            print("payoff: ", node.getPayoff())
+            for child in node.getChildren():
+                queue.append(child)
