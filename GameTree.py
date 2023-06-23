@@ -44,7 +44,7 @@ class GameTree:
 
             tile.updateMark(0)
 
-    def payoffAt(self, node: GNode) -> int:
+    def setPayoff(self, node: GNode) -> int:
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
@@ -53,16 +53,15 @@ class GameTree:
                 node.updatePayoff(0)
             else:
                 node.updatePayoff(100)
-
-            return node.getPayoff()
+            return
 
         childPays = [child.getPayoff() for child in node.getChildren()]
         if node.getDepth() % 2 == 0:
             # Then these are the computer's choices, so pick the best one
-            return max(childPays)
-
-        # Otherwise, average together the user's options
-        return sum(childPays) / len(childPays)
+            node.updatePayoff(max(childPays))
+        else:
+            # Otherwise, average together the user's options
+            node.updatePayoff(sum(childPays) / len(childPays))
 
     def setPayoffs(self) -> None:
         """sets the payoffs for all nodes"""
@@ -70,7 +69,7 @@ class GameTree:
         tuples.sort(reverse=True)
         for _, nodes in tuples:
             for node in nodes:
-                node.updatePayoff(self.payoffAt(node))
+                self.setPayoff(node)
 
     def printTree(self) -> None:
         """prints the tree by depth"""
