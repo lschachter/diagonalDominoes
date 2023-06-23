@@ -43,17 +43,17 @@ class GameTree:
             self.nextMove(self.players[newPlayerId], depth + 1, newNode, newColor)
 
             tile.updateMark(0)
-            if newNode.isEmpty():
-                # If it's a leaf node, set the payoff as user win (0) or loss (100)
-                if newNode.getDepth() == 9 or newNode.getDepth() % 2 == 0:
-                    newNode.updatePayoff(0)
-                else:
-                    newNode.updatePayoff(100)
 
     def payoffAt(self, node: GNode) -> int:
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
+            # If it's a leaf node, set the payoff as user win (0) or loss (100)
+            if node.getDepth() == 9 or node.getDepth() % 2 == 0:
+                node.updatePayoff(0)
+            else:
+                node.updatePayoff(100)
+
             return node.getPayoff()
 
         childPays = [child.getPayoff() for child in node.getChildren()]
