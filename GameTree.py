@@ -12,6 +12,7 @@ class GameTree:
 
     def __init__(self, root: GNode, players: List["PlayerCollection"]) -> None:
         """constructs the tree with the given root tile"""
+        self.maxDepth = 9
         self.root = root
         self.players = players
 
@@ -47,12 +48,14 @@ class GameTree:
         given the children of the node"""
         if node.isEmpty():
             # If it's a leaf node, set the payoff as user win (0) or loss (100)
-            if node.getDepth() == 9 or node.getDepth() % 2 == 0:
+            if node.getDepth() == self.maxDepth or node.getDepth() % 2 == 0:
                 node.updatePayoff(0)
             else:
-                node.updatePayoff(100)
+                # Multiply by (max depth - node.depth) to prioritize faster wins
+                node.updatePayoff(100 * (self.maxDepth - node.getDepth()))
             return
 
+        # Otherwise, the payoff depends on those of the node's children
         childPays = [child.getPayoff() for child in node.getChildren()]
         if node.getDepth() % 2 == 0:
             # Then these are the computer's choices, so pick the best one
