@@ -63,27 +63,13 @@ class GameTree:
 
         # Otherwise, average together the user's options
         return sum(childPays) / len(childPays)
-        # numPos = 1
-        # numNeg = 1
-        # for num in childPays:
-        #     if num <= 0:
-        #         numNeg += 1
-        #     else:
-        #         numPos += 1
-        # pay = numPos / numNeg
-        # if pay > 1:
-        #     return numNeg / numPos
-        # elif pay == 1:
-        #     return 0
-        # else:
-        #     return -pay
 
     def setPayoffs(self) -> None:
         """sets the payoffs for all nodes"""
         tuples = list(self.tree.items())
         tuples.sort(reverse=True)
-        for layer in tuples:
-            for node in layer[1]:
+        for _, nodes in tuples:
+            for node in nodes:
                 node.updatePayoff(self.payoffAt(node))
 
     def printTree(self) -> None:
