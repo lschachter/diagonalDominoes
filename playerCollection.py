@@ -41,6 +41,28 @@ class PlayerCollection:
             self.tiles.append(tile)
             self.left.append(tile)
 
+        # TESTER
+        # if playerId == 1:
+        #     tileColors = [
+        #         ("green", "yellow"),
+        #         ("blue", "blue"),
+        #         ("green", "red"),
+        #         ("yellow", "yellow"),
+        #         ("green", "green"),
+        #     ]
+        # else:
+        #     tileColors = [
+        #         ("red", "red"),
+        #         ("blue", "blue"),
+        #         ("red", "yellow"),
+        #         ("blue", "yellow"),
+        #         ("green", "green"),
+        #     ]
+        # for color1, color2 in tileColors:
+        #     tile = Tile(color1, color2, self.window)
+        #     self.tiles.append(tile)
+        #     self.left.append(tile)
+
         info = Text(self.top, f"Player {str(self.playerId)} Collection")
         info.setSize(25)
         info.draw(self.window)

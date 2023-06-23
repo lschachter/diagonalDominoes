@@ -106,7 +106,7 @@ class GamePlay:
             return None
 
         pays = [child.getPayoff() for child in node.getChildren()]
-        index = pays.index(min(pays))
+        index = pays.index(max(pays))
         newNode = node.getChildren()[index]
         if newNode.getTile().getColor1() != node.getTile().getColor2():
             newNode.getTile().switch()
