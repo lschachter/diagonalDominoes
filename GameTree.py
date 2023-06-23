@@ -85,8 +85,8 @@ class GameTree:
 
     def printTree(self) -> None:
         """prints the tree by depth"""
-        for level in list(self.tree.items()):
-            print(level[0])
-            for node in level[1]:
+        for level, nodes in list(self.tree.items()):
+            print(level)
+            for node in nodes:
                 print(node)
                 print("payoff: ", node.getPayoff())
