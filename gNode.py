@@ -14,7 +14,6 @@ class GNode:
         self.children = []
         self.depth = depth
         self.payOff = 0
-        self.items = ""
 
     def getTile(self) -> "Tile":
         return self.tile
@@ -42,9 +41,9 @@ class GNode:
         """adds a node to the list of nodes reachable by this one,
         and adds the name of that node's tile to a string"""
         self.children.append(gNode)
-        self.items += gNode.getTile().getName() + " "
 
     def __str__(self) -> str:
         """allows the node to be printed out readably as the tile
         and all nodes it can reach"""
-        return f"[{self.tile.getName()}: {self.items}]"
+        children = ", ".join([node.getTile().getName() for node in self.children])
+        return f"[{self.tile.getName()}: {children}]"
