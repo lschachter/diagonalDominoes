@@ -18,6 +18,9 @@ class GNode:
     def getTile(self) -> "Tile":
         return self.tile
 
+    def getColors(self) -> List[str]:
+        return self.tile.getColors()
+
     def getDepth(self) -> int:
         """returns the depth of the node"""
         return self.depth

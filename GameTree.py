@@ -16,7 +16,7 @@ class GameTree:
         self.root = root
         self.players = players
 
-        self.nextMove(self.players[1], 1, self.root, self.root.getTile().getColors()[1])
+        self.nextMove(self.players[1], 1, self.root, self.root.getColors()[1])
 
     def nextMove(
         self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str

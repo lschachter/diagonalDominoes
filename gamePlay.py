@@ -104,7 +104,7 @@ class GamePlay:
         pays = [child.getPayoff() for child in node.getChildren()]
         index = pays.index(max(pays))
         newNode = node.getChildren()[index]
-        if newNode.getTile().getColors()[0] != node.getTile().getColors()[1]:
+        if newNode.getColors()[0] != node.getColors()[1]:
             newNode.getTile().switch()
         newNode.getTile().placeTile(gridPoint)
 
@@ -139,7 +139,7 @@ class GamePlay:
         self.window.close()
 
     def processPlaceTileClick(self, node: GNode, depth: int) -> GNode:
-        placedColor = node.getTile().getColors()[1]
+        placedColor = node.getColors()[1]
         if placedColor != self.humanTiles[self.numClicked].getColors()[0]:
             self.humanTiles[self.numClicked].switch()
 
