@@ -22,16 +22,16 @@ class GameTree:
         self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
     ) -> None:
         """a recursive function that finds each possible next move"""
-        for tile in player.getLeft():
-            colors = tile.getColors()
-            if prevCol not in colors or tile.getUseState() != 0:
-                # Ignore tiles that don't match the color or that have been used
+        for tile in player.getTiles():
+            # Ignore tiles that don't match the color or that have been used
+            if tile.getUseState() != 0 or prevCol not in tile.getColors():
                 continue
 
             tile.updateUseState(1)
             newNode = GNode(tile, depth)
             node.addChild(newNode)
 
+            colors = tile.getColors()
             newColor = colors[0] if colors[0] != prevCol else colors[1]
             newPlayerId = player.getPlayerId() % 2
             self.nextMove(self.players[newPlayerId], depth + 1, newNode, newColor)

@@ -108,9 +108,5 @@ class PlayerCollection:
         """returns the switch and placement tiles"""
         return self.switchB, self.placeB
 
-    def getLeft(self) -> List[Tile]:
-        """returns the tiles left in the player's hand"""
-        return [tile for tile in self.tiles if tile.getUseState() != 2]
-
     def getPlayerId(self) -> int:
         return self.playerId
