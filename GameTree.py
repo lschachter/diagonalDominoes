@@ -16,10 +16,7 @@ class GameTree:
         self.root = root
         self.players = players
 
-    def populateTree(self) -> None:
-        """gives the player tile collections and relevant info to the recursive
-        function 'nextMove' to populate the tree"""
-        self.nextMove(self.players[1], 1, self.root, self.root.getTile().getColor2())
+        self.nextMove(self.players[1], 1, self.root, self.root.getTile().getColors()[1])
 
     def nextMove(
         self, player: "PlayerCollection", depth: int, node: GNode, prevCol: str
