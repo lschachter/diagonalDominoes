@@ -28,14 +28,13 @@ class GamePlay:
     def buildPlayerCollections(self) -> None:
         # sets up each player collection
         self.player1 = PlayerCollection(self.window, Point(120, 50), 1)
-        self.player2 = PlayerCollection(self.window, Point(880, 50), 2)
-        self.player1.displayTiles()
         self.player1.humanSetup()
-        self.player2.displayTiles()
 
         self.buttons = self.player1.getButtonSet()
         self.humanTiles = self.player1.getTiles()
         self.switch, self.place = self.player1.getMoveSet()
+
+        self.player2 = PlayerCollection(self.window, Point(880, 50), 2)
 
         self.startX = 0
         self.startY = 8
@@ -77,8 +76,7 @@ class GamePlay:
         gridPoint = self.grid.gridPoint(self.startX, self.startY)
         self.humanTiles[self.numClicked].placeTile(gridPoint)
         self.place.deactivate()
-        self.humanTiles[self.numClicked].updateMark(2)
-        self.player1.updateLeft(self.humanTiles[self.numClicked])
+        self.humanTiles[self.numClicked].updateUseState(2)
         for button in self.buttons:
             button.deactivate()
         self.startX += 1
@@ -106,10 +104,9 @@ class GamePlay:
         pays = [child.getPayoff() for child in node.getChildren()]
         index = pays.index(max(pays))
         newNode = node.getChildren()[index]
-        if newNode.getTile().getColor1() != node.getTile().getColor2():
+        if newNode.getTile().getColors()[0] != node.getTile().getColors()[1]:
             newNode.getTile().switch()
         newNode.getTile().placeTile(gridPoint)
-        self.player2.updateLeft(newNode.getTile())
 
         if node.getChildren()[index].isEmpty():
             self.winButton = WinButton(self.window, "2")
@@ -142,11 +139,11 @@ class GamePlay:
         self.window.close()
 
     def processPlaceTileClick(self, node: GNode, depth: int) -> GNode:
-        placedColor = node.getTile().getColor2()
-        if placedColor != self.humanTiles[self.numClicked].getColor1():
+        placedColor = node.getTile().getColors()[1]
+        if placedColor != self.humanTiles[self.numClicked].getColors()[0]:
             self.humanTiles[self.numClicked].switch()
 
-        if placedColor != self.humanTiles[self.numClicked].getColor1():
+        if placedColor != self.humanTiles[self.numClicked].getColors()[0]:
             msg = "That move is invalid.\nChoose a tile whose left color corresponds\nto the rightmost tile-color on the board."
             errorRect = InfoBox(self.window, Point(496, 225), 500, 250, msg, size=26)
             self.window.getMouse()

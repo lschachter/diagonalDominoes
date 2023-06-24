@@ -17,9 +17,8 @@ class PlayerCollection:
         self.window = window
         self.top = top
         self.playerId = playerId
-        self.tiles = []
+        self.tiles: List[Tile] = []
         self.choiceButtons = []
-        self.left = []
         color = ["green", "blue", "red", "yellow"]
         cs = [
             (0, 1),
@@ -33,44 +32,43 @@ class PlayerCollection:
             (2, 2),
             (3, 3),
         ]
-        for _ in range(5):
-            index = randrange(len(cs))
-            col1, col2 = cs[index][0], cs[index][1]
-            cs.remove(cs[index])
-            tile = Tile(color[col1], color[col2], self.window)
-            self.tiles.append(tile)
-            self.left.append(tile)
+        # for _ in range(5):
+        #     index = randrange(len(cs))
+        #     col1, col2 = cs[index][0], cs[index][1]
+        #     cs.remove(cs[index])
+        #     tile = Tile(color[col1], color[col2], self.window)
+        #     self.tiles.append(tile)
 
         # TESTER
-        # if playerId == 1:
-        #     tileColors = [
-        #         ("green", "yellow"),
-        #         ("blue", "blue"),
-        #         ("green", "red"),
-        #         ("yellow", "yellow"),
-        #         ("green", "green"),
-        #     ]
-        # else:
-        #     tileColors = [
-        #         ("red", "red"),
-        #         ("blue", "blue"),
-        #         ("red", "yellow"),
-        #         ("blue", "yellow"),
-        #         ("green", "green"),
-        #     ]
-        # for color1, color2 in tileColors:
-        #     tile = Tile(color1, color2, self.window)
-        #     self.tiles.append(tile)
-        #     self.left.append(tile)
+        if playerId == 1:
+            tileColors = [
+                ("green", "yellow"),
+                ("blue", "blue"),
+                ("green", "red"),
+                ("yellow", "yellow"),
+                ("green", "green"),
+            ]
+        else:
+            tileColors = [
+                ("red", "red"),
+                ("blue", "blue"),
+                ("red", "yellow"),
+                ("blue", "yellow"),
+                ("green", "green"),
+            ]
+        for color1, color2 in tileColors:
+            tile = Tile(color1, color2, self.window)
+            self.tiles.append(tile)
+        # END TESTER
 
         info = Text(self.top, f"Player {str(self.playerId)} Collection")
         info.setSize(25)
         info.draw(self.window)
 
+        self.displayTiles()
+
     def displayTiles(self) -> None:
-        """Displays the collection of tiles on the screen
-        as well as the polygon to cover the tiles should
-        the game go so long as to require the board to shift"""
+        """Display the collection of tiles on the screen"""
         y = self.top.getY() + 50
         for tile in self.tiles:
             tile.drawTile(
@@ -79,7 +77,7 @@ class PlayerCollection:
             y += 80
 
     def humanSetup(self) -> None:
-        """Creates the buttons needed for a human player"""
+        """Create the buttons needed for a human player"""
         self.switchB = self.setUpButton("Switch Tile \nOrientation", -1)
         self.placeB = self.setUpButton("Place Tile", 1)
 
@@ -112,11 +110,7 @@ class PlayerCollection:
 
     def getLeft(self) -> List[Tile]:
         """returns the tiles left in the player's hand"""
-        return self.left
-
-    def updateLeft(self, tile: Tile) -> None:
-        """updates the tiles left in the player's hand"""
-        self.left.remove(tile)
+        return [tile for tile in self.tiles if tile.getUseState() != 2]
 
     def getPlayerId(self) -> int:
         return self.playerId

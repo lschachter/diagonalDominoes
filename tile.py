@@ -13,7 +13,7 @@ class Tile:
         self.squareWidth = self.squareHeight = 50
         self.objects = []
         self.colors = [color1, color2]
-        self.mark = 0
+        self.useState = 0
 
     def drawTile(self, pt1: Point, pt2: Point) -> None:
         """Draws the tile and appends each piece of it to self.objects"""
@@ -77,30 +77,22 @@ class Tile:
         """returns the name of the tile"""
         return self.colors[0][0] + self.colors[1][0]
 
-    def getMark(self) -> int:
-        """returns the tile's mark"""
-        return self.mark
+    def getUseState(self) -> int:
+        """returns the tile's useState"""
+        return self.useState
 
-    def updateMark(self, num: int) -> None:
-        """updates the tile's mark:
+    def updateUseState(self, num: int) -> None:
+        """updates the tile's useState:
         0 == unused
         1 == used in the current AI check
         2 == used on the board
         """
-        self.mark = num
+        self.useState = num
 
     def undraw(self) -> None:
         """undraws each piece of the tile"""
         for item in self.objects:
             item.undraw()
-
-    def getColor1(self) -> str:
-        """returns the left color of the tile"""
-        return self.colors[0]
-
-    def getColor2(self) -> str:
-        """returns the right color of the tile"""
-        return self.colors[1]
 
     def getColors(self) -> List[str]:
         return self.colors
