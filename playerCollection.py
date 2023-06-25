@@ -32,33 +32,33 @@ class PlayerCollection:
             (2, 2),
             (3, 3),
         ]
-        # for _ in range(5):
-        #     index = randrange(len(cs))
-        #     col1, col2 = cs[index][0], cs[index][1]
-        #     cs.remove(cs[index])
-        #     tile = Tile(color[col1], color[col2], self.window)
-        #     self.tiles.append(tile)
+        for _ in range(5):
+            index = randrange(len(cs))
+            col1, col2 = cs[index][0], cs[index][1]
+            cs.remove(cs[index])
+            tile = Tile(color[col1], color[col2], self.window)
+            self.tiles.append(tile)
 
         # TESTER
-        if playerId == 1:
-            tileColors = [
-                ("green", "yellow"),
-                ("blue", "blue"),
-                ("green", "red"),
-                ("yellow", "yellow"),
-                ("green", "green"),
-            ]
-        else:
-            tileColors = [
-                ("red", "red"),
-                ("blue", "blue"),
-                ("red", "yellow"),
-                ("blue", "yellow"),
-                ("green", "green"),
-            ]
-        for color1, color2 in tileColors:
-            tile = Tile(color1, color2, self.window)
-            self.tiles.append(tile)
+        # if playerId == 1:
+        #     tileColors = [
+        #         ("green", "yellow"),
+        #         ("blue", "blue"),
+        #         ("green", "red"),
+        #         ("yellow", "yellow"),
+        #         ("green", "green"),
+        #     ]
+        # else:
+        #     tileColors = [
+        #         ("red", "red"),
+        #         ("blue", "blue"),
+        #         ("red", "yellow"),
+        #         ("blue", "yellow"),
+        #         ("green", "green"),
+        #     ]
+        # for color1, color2 in tileColors:
+        #     tile = Tile(color1, color2, self.window)
+        #     self.tiles.append(tile)
         # END TESTER
 
         info = Text(self.top, f"Player {str(self.playerId)} Collection")
