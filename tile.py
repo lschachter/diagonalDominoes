@@ -31,12 +31,12 @@ class Tile:
             object.setOutline("brown")
             self.objects.append(object)
 
-        def buildTileColor(offset: int) -> Rectangle:
-            rectX, rectY = (rectX1, rectY1) if offset == 1 else (rectX2, rectY2)
-            color = self.colors[0] if offset == 1 else self.colors[1]
+        def buildTileColor(dir: int) -> Rectangle:
+            rectX, rectY = (rectX1, rectY1) if dir == 1 else (rectX2, rectY2)
+            color = self.colors[0] if dir == 1 else self.colors[1]
+            up, down = 3 * dir, 47 * dir
             half = Rectangle(
-                Point(rectX + (3 * offset), rectY - (3 * offset)),
-                Point(rectX + (47 * offset), rectY - (47 * offset)),
+                Point(rectX + up, rectY - up), Point(rectX + down, rectY - down)
             )
             drawObject(half, color)
             return half
@@ -59,13 +59,13 @@ class Tile:
 
     def placeTile(self, pt1: Point) -> None:
         """animates placing the tile on the board"""
-        xDist = abs(self.p1.getX() - pt1.getX())
-        yDist = abs(self.p1.getY() - pt1.getY())
-        if self.p1.getX() > pt1.getX():
-            xDist = -xDist
-        if self.p1.getY() > pt1.getY():
-            yDist = -yDist
+        xDist = self.getDist(self.p1.getX(), pt1.getX())
+        yDist = self.getDist(self.p1.getY(), pt1.getY())
         self.moveTile(xDist, yDist, 50)
+
+    def getDist(self, a: int, b: int) -> int:
+        dist = abs(a - b)
+        return dist if a <= b else -dist
 
     def moveTile(self, x: int, y: int, dist: int) -> None:
         """Moves a tile"""
