@@ -70,10 +70,9 @@ class PlayerCollection:
     def displayTiles(self) -> None:
         """Display the collection of tiles on the screen"""
         y = self.top.getY() + 50
+        xStart, xEnd = self.top.getX() - 25, self.top.getX() + 25
         for tile in self.tiles:
-            tile.drawTile(
-                Point(self.top.getX() - 25, y), Point(self.top.getX() + 25, y)
-            )
+            tile.drawTile(Point(xStart, y), Point(xEnd, y))
             y += 80
 
     def humanSetup(self) -> None:
