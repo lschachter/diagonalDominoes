@@ -69,5 +69,4 @@ class GameTree:
             node = queue.pop(0)
             print(node)
             print("payoff: ", node.getPayoff())
-            for child in node.getChildren():
-                queue.append(child)
+            queue += node.getChildren()
