@@ -30,7 +30,7 @@ class GamePlay:
         self.player1 = PlayerCollection(self.window, Point(120, 50), 1)
         self.player1.humanSetup()
 
-        self.buttons = self.player1.getButtonSet()
+        self.buttons = self.player1.getChoiceButtons()
         self.humanTiles = self.player1.getTiles()
         self.switch, self.place = self.player1.getMoveSet()
 
@@ -54,7 +54,7 @@ class GamePlay:
             pt = self.window.getMouse()
 
         if startingNode:
-            self.humanMove(pt, startingNode, 2)
+            self.humanMove(pt, startingNode)
         else:
             self.window.close()
 
@@ -85,11 +85,11 @@ class GamePlay:
     def computerSetUp(self, rootTile: "Tile") -> Optional[GNode]:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
-        self.root = GNode(rootTile, 0)
-        self.tree = GameTree(self.root, [self.player1, self.player2])
+        root = GNode(rootTile, 0)
+        self.tree = GameTree(root, [self.player1, self.player2])
         self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
 
-        return self.computerMove(self.root)
+        return self.computerMove(root)
 
     def computerMove(self, node: GNode) -> Optional[GNode]:
         """chooses the computer's next move based on payoff, then places it"""
@@ -101,14 +101,14 @@ class GamePlay:
             self.winButton = WinButton(self.window, "1")
             return None
 
-        pays = [child.getPayoff() for child in node.getChildren()]
-        index = pays.index(max(pays))
-        newNode = node.getChildren()[index]
+        childrenByPay = {child.getPayoff(): child for child in node.getChildren()}
+        newNode = childrenByPay[max(childrenByPay)]
+
         if newNode.getColors()[0] != node.getColors()[1]:
             newNode.getTile().switch()
         newNode.getTile().placeTile(gridPoint)
 
-        if node.getChildren()[index].isEmpty():
+        if newNode.isEmpty():
             self.winButton = WinButton(self.window, "2")
             return None
 
@@ -117,7 +117,7 @@ class GamePlay:
 
         return newNode
 
-    def humanMove(self, pt: Point, node: GNode, depth: int) -> None:
+    def humanMove(self, pt: Point, node: GNode) -> None:
         """gets clicks until player places tile correctly"""
         while not self.quitB.isClicked(pt):
             if self.winButton and self.winButton.isClicked(pt):
@@ -132,15 +132,14 @@ class GamePlay:
             if self.switch.isClicked(pt):
                 self.humanTiles[self.numClicked].switch()
             elif self.place.isClicked(pt):
-                node = self.processPlaceTileClick(node, depth)
-                depth += 2
+                node = self.processPlaceTileClick(node)
 
             pt = self.window.getMouse()
         self.window.close()
 
-    def processPlaceTileClick(self, node: GNode, depth: int) -> GNode:
+    def processPlaceTileClick(self, node: GNode) -> GNode:
         placedColor = node.getColors()[1]
-        if placedColor != self.humanTiles[self.numClicked].getColors()[0]:
+        if placedColor == self.humanTiles[self.numClicked].getColors()[1]:
             self.humanTiles[self.numClicked].switch()
 
         if placedColor != self.humanTiles[self.numClicked].getColors()[0]:
@@ -150,14 +149,13 @@ class GamePlay:
             errorRect.delete()
         else:
             self.placeHumanTile()
-            if depth == 8:
+            if self.player1.isEmpty():
                 self.winButton = WinButton(self.window, "1")
             else:
-                for iNode in node.getChildren():
-                    if iNode.getTile() == self.humanTiles[self.numClicked]:
-                        newNode = iNode
+                for child in node.getChildren():
+                    if child.getTile() == self.humanTiles[self.numClicked]:
                         break
-                node = self.computerMove(newNode)
+                node = self.computerMove(child)
 
         return node
 

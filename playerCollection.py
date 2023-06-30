@@ -4,7 +4,7 @@ from graphics import Point, Text
 from tile import Tile
 from button import Button
 
-from typing import TYPE_CHECKING, Tuple, List
+from typing import TYPE_CHECKING, Tuple, List, Dict
 
 if TYPE_CHECKING:
     from graphics import GraphWin
@@ -99,7 +99,7 @@ class PlayerCollection:
         """returns the set of tiles"""
         return self.tiles
 
-    def getButtonSet(self) -> List[Button]:
+    def getChoiceButtons(self) -> List[Button]:
         """returns the set of buttons used to choose the next tile"""
         return self.choiceButtons
 
@@ -109,3 +109,6 @@ class PlayerCollection:
 
     def getPlayerId(self) -> int:
         return self.playerId
+
+    def isEmpty(self) -> bool:
+        return 0 not in [tile.useState for tile in self.tiles]
