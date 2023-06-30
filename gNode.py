@@ -8,11 +8,10 @@ class GNode:
     """a GNode is just an object that holds a tile and all the tiles
     that that tile can reach"""
 
-    def __init__(self, tile: "Tile", depth: int):
+    def __init__(self, tile: "Tile"):
         """constructs the node"""
         self.tile = tile
         self.children = []
-        self.depth = depth
         self.payOff = 0
 
     def getTile(self) -> "Tile":
@@ -20,10 +19,6 @@ class GNode:
 
     def getColors(self) -> List[str]:
         return self.tile.getColors()
-
-    def getDepth(self) -> int:
-        """returns the depth of the node"""
-        return self.depth
 
     def updatePayoff(self, num: int) -> None:
         """updates the node's payoff"""
@@ -49,4 +44,4 @@ class GNode:
         """allows the node to be printed out readably as the tile
         and all nodes it can reach"""
         children = ", ".join([node.getTile().getName() for node in self.children])
-        return f"[{self.depth} {self.tile.getName()}: {children}]"
+        return f"[{self.tile.getName()}: {children}]"

@@ -28,7 +28,7 @@ class GameTree:
                 continue
 
             tile.updateUseState(1)
-            newNode = GNode(tile, depth)
+            newNode = GNode(tile)
             node.addChild(newNode)
 
             colors = tile.getColors()
@@ -38,23 +38,23 @@ class GameTree:
 
             tile.updateUseState(0)
 
-        self.setPayoff(node)
+        self.setPayoff(node, depth - 1)
 
-    def setPayoff(self, node: GNode) -> int:
+    def setPayoff(self, node: GNode, depth: int) -> int:
         """calculates payoffs based on how likely the human is to win
         given the children of the node"""
         if node.isEmpty():
             # If it's a leaf node, set the payoff as user win (0) or loss (100)
-            if node.getDepth() == self.maxDepth or node.getDepth() % 2 == 0:
+            if depth == self.maxDepth or depth % 2 == 0:
                 node.updatePayoff(0)
             else:
-                # Multiply by (max depth - node.depth) to prioritize faster wins
-                node.updatePayoff(100 * (self.maxDepth - node.getDepth()))
+                # Multiply by (max depth - node depth) to prioritize faster wins
+                node.updatePayoff(100 * (self.maxDepth - depth))
             return
 
         # Otherwise, the payoff depends on those of the node's children
         childPays = [child.getPayoff() for child in node.getChildren()]
-        if node.getDepth() % 2 == 0:
+        if depth % 2 == 0:
             # Then these are the computer's choices, so pick the best one
             node.updatePayoff(max(childPays))
         else:
@@ -63,10 +63,10 @@ class GameTree:
 
     def printTree(self) -> None:
         """prints the tree by depth"""
-        queue = [self.root]
+        queue = [(self.root, 0)]
 
         while queue:
-            node = queue.pop(0)
-            print(node)
+            node, depth = queue.pop(0)
+            print(f"{depth}: {node}")
             print("payoff: ", node.getPayoff())
-            queue += node.getChildren()
+            queue += [(node, depth + 1) for node in node.getChildren()]

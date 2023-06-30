@@ -85,7 +85,7 @@ class GamePlay:
     def computerSetUp(self, rootTile: "Tile") -> Optional[GNode]:
         """creates an instance of the game tree and calls to populate it,
         then runs the rollback analysis"""
-        root = GNode(rootTile, 0)
+        root = GNode(rootTile)
         self.tree = GameTree(root, [self.player1, self.player2])
         self.tree.printTree()  # UNCOMMENT LINE TO SEE TREE PRINT
 
