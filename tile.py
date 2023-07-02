@@ -13,7 +13,7 @@ class Tile:
         self.squareWidth = self.squareHeight = 50
         self.objects = []
         self.colors = [color1, color2]
-        self.useState = 0
+        self.isUnused = True
 
     def drawTile(self, pt1: Point, pt2: Point) -> None:
         """Draws the tile and appends each piece of it to self.objects"""
@@ -77,17 +77,13 @@ class Tile:
         """returns the name of the tile"""
         return self.colors[0][0] + self.colors[1][0]
 
-    def getUseState(self) -> int:
-        """returns the tile's useState"""
-        return self.useState
+    def isAvailable(self) -> bool:
+        """returns the tile's availability"""
+        return self.isUnused
 
-    def updateUseState(self, num: int) -> None:
-        """updates the tile's useState:
-        0 == unused
-        1 == used in the current AI check
-        2 == used on the board
-        """
-        self.useState = num
+    def updateAvailability(self) -> None:
+        """update the tile's availability: true if unused, false if not"""
+        self.isUnused = not self.isUnused
 
     def undraw(self) -> None:
         """undraws each piece of the tile"""

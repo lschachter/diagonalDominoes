@@ -71,7 +71,7 @@ class GamePlay:
         gridPoint = self.grid.gridPoint(self.startX, self.startY)
         self.humanTiles[self.numClicked].placeTile(gridPoint)
         self.place.deactivate()
-        self.humanTiles[self.numClicked].updateUseState(2)
+        self.humanTiles[self.numClicked].updateAvailability()
         for button in self.buttons:
             button.deactivate()
         self.startX += 1

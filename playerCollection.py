@@ -111,4 +111,4 @@ class PlayerCollection:
         return self.playerId
 
     def isEmpty(self) -> bool:
-        return 0 not in [tile.useState for tile in self.tiles]
+        return True not in [tile.isAvailable() for tile in self.tiles]
