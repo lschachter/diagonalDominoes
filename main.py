@@ -66,7 +66,7 @@ def main() -> None:
     grid = Grid(window)
 
     # starts the game
-    game = GamePlay(window, grid)
+    game = GamePlay(grid)
     game.playGame()
 
 

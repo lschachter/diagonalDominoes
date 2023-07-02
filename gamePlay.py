@@ -13,14 +13,10 @@ if TYPE_CHECKING:
 
 
 class GamePlay:
-    def __init__(
-        self,
-        window: "GraphWin",
-        grid: "Grid",
-    ) -> None:
+    def __init__(self, grid: "Grid") -> None:
         """constructs the instance for game play"""
-        self.window = window
         self.grid = grid
+        self.window = grid.getWin()
         self.winButton = None
         self.buildPlayerCollections()
 
