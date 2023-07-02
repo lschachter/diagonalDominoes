@@ -64,8 +64,6 @@ def main() -> None:
     gameB.die()
     instB.die()
     grid = Grid(window)
-    window.setBackground("gray")
-    grid.drawGrid()
 
     # starts the game
     game = GamePlay(window, grid)

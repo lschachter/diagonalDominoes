@@ -21,7 +21,6 @@ class GamePlay:
         """constructs the instance for game play"""
         self.window = window
         self.grid = grid
-        self.quitB = self.grid.getQuitB()
         self.winButton = None
         self.buildPlayerCollections()
 
@@ -46,9 +45,9 @@ class GamePlay:
         pt = self.window.getMouse()
         startingNode = None
 
-        while not self.quitB.isClicked(pt):
+        while not self.grid.getQuitB().isClicked(pt):
             startingNode = self.startUp(pt)
-            if startingNode:
+            if startingNode or self.winButton:
                 break
 
             pt = self.window.getMouse()
@@ -119,11 +118,11 @@ class GamePlay:
 
     def humanMove(self, pt: Point, node: GNode) -> None:
         """gets clicks until player places tile correctly"""
-        while not self.quitB.isClicked(pt):
+        while not self.grid.getQuitB().isClicked(pt):
             if self.winButton and self.winButton.isClicked(pt):
                 self.restartGame()
 
-            if self.quitB.isClicked(pt):
+            if self.grid.getQuitB().isClicked(pt):
                 break
 
             # Check if a tile was selected

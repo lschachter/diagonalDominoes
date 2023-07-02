@@ -10,16 +10,19 @@ if TYPE_CHECKING:
 class Grid:
     def __init__(self, window: "GraphWin") -> None:
         """Constructs the game grid"""
-        self.width = window.getWidth()
-        self.height = window.getHeight()
+        self.width, self.height = window.getWidth(), window.getHeight()
         self.window = window
-        self.window.setCoords(0, 600, 1000, 0)
+        self.maxX, self.maxY = 1000, 600
+        self.window.setCoords(0, self.maxY, self.maxX, 0)
         self.grid = []
         self.squareWidth = self.squareHeight = 50
 
+        self.window.setBackground("gray")
+        self.drawGrid()
+
     def drawGrid(self) -> None:
         """Draws the grid"""
-        rect = Rectangle(Point(0, 0), Point(1000, 600))
+        rect = Rectangle(Point(0, 0), Point(self.maxX, self.maxY))
         rect.draw(self.window)
         rect.setOutline("gray")
         rect.setFill("gray")
